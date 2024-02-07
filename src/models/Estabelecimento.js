@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose;
+const { Schema } = mongoose;
 
 const EstabelecimentoSchema = new Schema({
   nome: {
@@ -28,7 +28,7 @@ const EstabelecimentoSchema = new Schema({
   },
   geo: {
     tipo: String,
-    cordinates: Array,
+    coordinates: Array,
   },
   dataCadastro: {
     type: Date,
