@@ -24,5 +24,8 @@ module.exports = {
   rules: {
     'no-console': 'off',
     'import/first': 'off',
+    'underscore-dangle': 'off',
+    'no-restricted-syntax': 'off',
+    'no-await-in-loop': 'off',
   },
 };
