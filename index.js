@@ -3,6 +3,7 @@ import morgan from 'morgan';
 import cors from 'cors';
 import './database';
 import EstabelecimentoRoutes from './src/routes/Estabelecimento.routes';
+import ServicoRoutes from './src/routes/Servico.routes';
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(cors());
 app.set('port', 3000);
 
 app.use('/estabelecimento', EstabelecimentoRoutes);
+app.use('/servico', ServicoRoutes);
 
 app.listen(app.get('port'), () => {
   console.log(`server is running in ${app.get('port')} port 🚀`);
