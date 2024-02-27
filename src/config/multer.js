@@ -1,7 +1,5 @@
-import multer from 'multer';
 import multerS3 from 'multer-s3';
 import aws from 'aws-sdk';
-import { extname } from 'path';
 
 const s3 = new aws.S3({
   accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -16,9 +14,14 @@ const multerConfig = {
     acl: 'public-read',
     contentType: multerS3.AUTO_CONTENT_TYPE,
     key: (req, file, cb) => {
-      cb(null, `${Date.now()}${extname(file.originalname)}`);
+      const { estabelecimentoId } = req.body;
+      const nameParts = file.originalname.split('.');
+      const uniqueIdentifier = `${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+      const fileName = `${uniqueIdentifier}.${nameParts[nameParts.length - 1]}`;
+      const path = `servico/${estabelecimentoId}/${fileName}`;
+      cb(null, path);
     },
   }),
 };
 
-export default multer(multerConfig);
+export { multerConfig, s3 };
