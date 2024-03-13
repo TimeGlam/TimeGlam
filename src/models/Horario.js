@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose;
+const { Schema } = mongoose;
 
 const HorarioSchema = new Schema({
-
   estabelecimentoId: {
     type: mongoose.Types.ObjectId,
     ref: 'Estabelecimento',

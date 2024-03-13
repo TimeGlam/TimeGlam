@@ -3,7 +3,6 @@ import mongoose from 'mongoose';
 const Schema = mongoose;
 
 const EstabelecimentoClienteSchema = new Schema({
-
   estabelecimentoId: {
     type: mongoose.Types.ObjectId,
     ref: 'Estabelecimento',
@@ -26,5 +25,8 @@ const EstabelecimentoClienteSchema = new Schema({
   },
 });
 
-const EstabelecimentoCliente = mongoose.model('EstabelecimentoCliente', EstabelecimentoClienteSchema);
+const EstabelecimentoCliente = mongoose.model(
+  'EstabelecimentoCliente',
+  EstabelecimentoClienteSchema,
+);
 export default EstabelecimentoCliente;

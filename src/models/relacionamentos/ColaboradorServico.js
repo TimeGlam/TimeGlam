@@ -1,15 +1,14 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose;
+const { Schema } = mongoose;
 
 const ColaboradorServicoSchema = new Schema({
-
-  ColaboradorId: {
+  colaboradorId: {
     type: mongoose.Types.ObjectId,
     ref: 'Colaborador',
     required: true,
   },
-  ServicoId: {
+  servicoId: {
     type: mongoose.Types.ObjectId,
     ref: 'Servico',
     required: true,
@@ -26,5 +25,8 @@ const ColaboradorServicoSchema = new Schema({
   },
 });
 
-const ColaboradorServico = mongoose.model('ColaboradorServico', ColaboradorServicoSchema);
+const ColaboradorServico = mongoose.model(
+  'ColaboradorServico',
+  ColaboradorServicoSchema,
+);
 export default ColaboradorServico;

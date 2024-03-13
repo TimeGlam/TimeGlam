@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose;
+const { Schema } = mongoose;
 
 const ColaboradorSchema = new Schema({
   nome: {
@@ -17,7 +17,7 @@ const ColaboradorSchema = new Schema({
   },
   senha: {
     type: String,
-    required: true,
+    default: null,
   },
   foto: {
     type: String,
@@ -43,36 +43,29 @@ const ColaboradorSchema = new Schema({
   ContaBancaria: {
     titular: {
       type: String,
-      required: true,
     },
     cpfCnpj: {
       type: String,
-      required: true,
     },
     banco: {
       type: String,
-      required: true,
     },
     tipo: {
       type: String,
-      required: true,
     },
     agencia: {
       type: String,
-      required: true,
     },
     numeroConta: {
       type: String,
-      required: true,
     },
     cvv: {
       type: String,
-      required: true,
     },
   },
-  recipientId: { // recebedor na api pagamento
+  recipientId: {
+    // recebedor na api pagamento
     type: String,
-    required: true,
   },
 
   dataCadastro: {

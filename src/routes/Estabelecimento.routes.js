@@ -28,6 +28,7 @@ routes.get('/servicos/:estabelecimentoId', async (req, res) => {
     res.json({ erro: true, message: err.message });
   }
 });
+
 routes.get('/:id', async (req, res) => {
   try {
     const estabelecimento = await Estabelecimento
@@ -43,4 +44,5 @@ routes.get('/:id', async (req, res) => {
     res.json({ error: true, message: err.message });
   }
 });
+
 export default routes;
