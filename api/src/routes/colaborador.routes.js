@@ -47,17 +47,16 @@ routes.post('/', async (req, res) => {
         status: colaborador.vinculo,
       }).save({ session });
     }
-    // SE JA EXISIR UM VINCULO ENTRE COLABORADOR E ESTABELECIMENTO
+    // SE JA EXISTIR UM VINCULO ENTRE COLABORADOR E ESTABELECIMENTO
     if (existentColaborador) {
-      const exitentRelationship =
-        await EstabelecimentoColaborador.findOneAndUpdate(
-          {
-            estabelecimentoId,
-            colaboradorId,
-          },
-          { status: colaborador.vinculo },
-          { session },
-        );
+      const exitentRelationship = await EstabelecimentoColaborador.findOneAndUpdate(
+        {
+          estabelecimentoId,
+          colaboradorId,
+        },
+        { status: colaborador.vinculo },
+        { session },
+      );
     }
     // RELACAO COM AS ESPECIALIDADES
     await ColaboradorServico.insertMany(

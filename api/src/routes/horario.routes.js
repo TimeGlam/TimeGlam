@@ -60,8 +60,7 @@ routes.post('/colaboradores', async (req, res) => {
       .select('colaboradorId -_id');
 
     const listaColaboradores = _.uniqBy(colaboradorServico, (vinculo) =>
-      vinculo.colaboradorId._id.toString(),
-    ).map((vinculo) => ({
+      vinculo.colaboradorId._id.toString()).map((vinculo) => ({
       label: vinculo.colaboradorId.nome,
       value: vinculo.colaboradorId._id,
     }));

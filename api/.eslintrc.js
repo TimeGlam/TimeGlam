@@ -28,5 +28,6 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'no-await-in-loop': 'off',
     'no-underscore-dangle': 'off',
+    'implicit-arrow-linebreak': 'off',
   },
 };
