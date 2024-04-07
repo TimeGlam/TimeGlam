@@ -12,7 +12,7 @@ routes.post('/', async (req, res) => {
   session.startTransaction();
 
   try {
-    const { colaborador, estabelecimentoId } = req.body;
+  const { colaborador, estabelecimentoId } = req.body;
     let newColaborador = null;
 
     // VERIFICAR SE O COLABORADOR EXISTE
