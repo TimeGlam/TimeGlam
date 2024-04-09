@@ -1,6 +1,7 @@
 :root {
     --primary: #0d1e29;
-    --secundary: rgb(190, 205, 215);
+    --secondary: rgb(190, 205, 215);
+    --alternative: rgb(8, 115, 155);
     --danger: #d62828;
     --success: #06d6a0;
     --white: #f5f6f7;
@@ -21,7 +22,7 @@ header > div {
     transition: 0.5s;
     padding: 10px 20px;
     text-align: right;
- 
+    
 }
 
 header > div:hover {
@@ -49,12 +50,13 @@ header small {
 
 /*SIDEBAR*/
 sidebar {
-    background-color: var(--secundary);
+    background-color: var(--secondary);
 }
 
 sidebar ul li {
     list-style: none;
     width: 100%;
+    justify-content: space-between;
 }
 sidebar ul li a {
  width: 100%;
@@ -62,12 +64,39 @@ sidebar ul li a {
  text-decoration: none;
  display: flex;
  align-items: center;
- padding: 5px 0;
+ padding: 10px 5px;
  margin: 2.5px 0;
  transition: 0.5s;
  border-radius: 5px;
 }
 sidebar ul li a.active {
     opacity: 1;
-    background-color: rgba(0,0,0, 0.2);
+    background-color: rgba(8, 115, 155, 0.2);
+}
+
+
+sidebar ul li a.active .mdi{
+    color: var(--alternative);
+}
+
+sidebar ul li a.visited, sidebar ul li a:focus{
+    color: var(--primary);
+}
+sidebar ul li a:hover {
+    opacity: 1;
+    background-color: rgba(8, 115, 155, 0.2);
+}
+
+sidebar ul li a:hover {
+    opacity: 1;
+    background-color: rgba(8, 115, 155, 0.2);
+}
+
+sidebar ul li a span.mdi{
+    font-size: 25px;
+    margin: 0 15px;
+}
+sidebar ul li a text{
+    font-size: 14px;
+    
 }

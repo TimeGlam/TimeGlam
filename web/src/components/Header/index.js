@@ -8,7 +8,10 @@ function Header() {
                 </div>
                 <div className="ml-auto">
                     <img src="https://i.pinimg.com/originals/7a/9c/c3/7a9cc36f478969da92e2e9fee391a5b2.jpg" />
-                    <span className="mdi mdi-chevron-down"></span>
+                    <span
+                        className="mdi mdi-chevron-down"
+                        style={{ color: 'white' }}
+                    ></span>
                 </div>
             </div>
         </header>
