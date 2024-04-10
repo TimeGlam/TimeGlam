@@ -1,5 +1,8 @@
-import { all } from 'redux-saga/effects';
+import { all, takeLatest } from 'redux-saga/effects';
+import api from '../../../services/api';
+export function* filtrarAgendamento({ start, end }) {
+    try {
+    } catch (error) {}
+}
 
-export default all([
-    // @agendamento/ALL getAgendamentos
-]);
+export default all([takeLatest('@agendamento/FILTER', filtrarAgendamento)]);
