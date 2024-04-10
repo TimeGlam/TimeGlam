@@ -21,7 +21,7 @@ const ServicoSchema = new Schema({
     required: true,
   },
   duracao: {
-    type: Number, // minutos
+    type: Date, // minutos
     required: true,
   },
   recorrencia: {
