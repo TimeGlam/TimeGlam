@@ -17,4 +17,4 @@ export function* filtrarAgendamento({ start, end }) {
     }
 }
 
-export default all([takeLatest('@agendamento/FILTER', filtrarAgendamento)]);
+export default all([takeLatest(types.FILTER_AGENDAMENTOS, filtrarAgendamento)]);
