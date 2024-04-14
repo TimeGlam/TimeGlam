@@ -19,9 +19,11 @@ function Clientes() {
                         <h2 className="mb-4 mt-0">Clientes</h2>
                         <div>
                             <button className="btn btn-primary btn-lg">
+                                {/*
                                 <span className="mdi mdi-plus">
                                     Adicionar cliente
-                                </span>
+                                </span>  */}
+
                             </button>
                         </div>
                     </div>
