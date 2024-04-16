@@ -1,17 +1,22 @@
-import { all, takeLatest, call } from 'redux-saga/effects';
+import { all, takeLatest, call, put } from 'redux-saga/effects';
 import api from '../../../services/api';
+import { updateAgendamentos } from './actions';
 import types from './types';
 import consts from '../../../consts';
 export function* filtrarAgendamento({ start, end }) {
     try {
-        const res = yield call(api.post, '/agendamento/filter', {
-            estabelecimentoId: '65dab55776929dc9681186d5',
+        const { data: res } = yield call(api.post, '/agendamento/filter', {
+            estabelecimentoId: consts.estabelecimentoId,
             range: {
                 start: start,
                 end: end,
             },
         });
-        console.log(res.data);
+        if (res.error) {
+            alert(res.message);
+            return false;
+        }
+        yield put(updateAgendamentos(res.agendamentos));
     } catch (error) {
         alert(error.message);
     }

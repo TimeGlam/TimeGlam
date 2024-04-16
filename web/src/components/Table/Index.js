@@ -1,7 +1,7 @@
 import { Table } from 'rsuite';
 const { Column, HeaderCell, Cell } = Table;
 
-function TableComponent({ data, config, actions, onRowClick }) {
+function TableComponent({ data, config, actions, content, onRowClick }) {
     return (
         <Table data={data} height={400} onRowClick={onRowClick}>
             {config.map((c) => (
@@ -11,7 +11,11 @@ function TableComponent({ data, config, actions, onRowClick }) {
                     fixed={c.fixed}
                 >
                     <HeaderCell>{c.label}</HeaderCell>
-                    <Cell dataKey={c.key} />
+                    {!c.content ? (
+                        <Cell dataKey={c.key} />
+                    ) : (
+                        <Cell>{(item) => c.content(item)}</Cell>
+                    )}
                 </Column>
             ))}
 

@@ -4,12 +4,13 @@ import { Button } from 'rsuite';
 import Table from '../../components/Table/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import { allClientes } from '../../store/modules/cliente/actions';
+import moment from 'moment';
 function Clientes() {
     const dispatch = useDispatch();
 
     const { clientes } = useSelector((state) => state.clientes);
     useEffect(() => {
-        dispatch(allClientes);
+        dispatch(allClientes());
     }, []);
     return (
         <div className="col p-5 overflow-auto h-100">
@@ -23,10 +24,10 @@ function Clientes() {
                                 <span className="mdi mdi-plus">
                                     Adicionar cliente
                                 </span>  */}
-
                             </button>
                         </div>
                     </div>
+
                     <Table
                         data={clientes}
                         config={[
@@ -39,6 +40,30 @@ function Clientes() {
                             {
                                 label: 'E-mail',
                                 key: 'email',
+                                width: 200,
+                            },
+                            {
+                                label: 'Telefone',
+                                key: 'telefone',
+                                width: 200,
+                            },
+                            {
+                                label: 'Gênero',
+                                content: (cliente) =>
+                                    cliente.genero === 'M'
+                                        ? 'Masculino'
+                                        : cliente.genero === 'F'
+                                        ? 'Feminino'
+                                        : 'LGBTQIAPN+',
+                                width: 200,
+                            },
+                            {
+                                label: 'Data de cadastro',
+                                content: (cliente) =>
+                                    moment(cliente.dataCadastro).format(
+                                        'DD/MM/YYYY'
+                                    ),
+                                width: 200,
                             },
                         ]}
                         actions={(cliente) => (
@@ -47,7 +72,7 @@ function Clientes() {
                             </Button>
                         )}
                         onRowClick={(cliente) => {
-                            alert(cliente.firstName);
+                            alert(cliente.nome);
                         }}
                     />
                 </div>

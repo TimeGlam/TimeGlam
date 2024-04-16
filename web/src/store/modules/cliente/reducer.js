@@ -1,16 +1,15 @@
-import produce from 'immer';
+import { produce } from 'immer';
 import types from './types';
 
-const initialState = {
+const initial_state = {
     clientes: [],
 };
 
-function cliente(state = initialState, action) {
+function cliente(state = initial_state, action) {
     switch (action.type) {
-        case types.UPDATE_cliente: {
+        case types.UPDATE_CLIENTES: {
             return produce(state, (draft) => {
                 draft = { ...draft, ...action.payload };
-
                 return draft;
             });
         }

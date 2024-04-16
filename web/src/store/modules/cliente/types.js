@@ -1,6 +1,6 @@
 const types = {
-    ALL_clientes: '@cliente/ALL',
-    UPDATE_cliente: '@cliente/update',
+    ALL_CLIENTES: '@cliente/ALL',
+    UPDATE_CLIENTES: '@cliente/UPDATE',
 };
 
 export default types;

@@ -29,7 +29,7 @@ const ClienteSchema = new Schema({
   },
   genero: {
     type: String,
-    enum: ['M', 'F', 'LGBT'],
+    enum: ['M', 'F', 'O'],
     required: true,
   },
 

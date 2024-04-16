@@ -89,7 +89,7 @@ routes.get('/estabelecimento/:estabelecimentoId', async (req, res) => {
       status: { $ne: 'E' },
     })
       .populate('clienteId')
-      .select('clienteId');
+      .select('clienteId dataCadastro');
 
     res.json({
       erro: false,

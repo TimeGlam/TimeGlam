@@ -21,4 +21,4 @@ export function* allClientes() {
     }
 }
 
-export default all([takeLatest(types.ALL_clientes, allClientes)]);
+export default all([takeLatest(types.ALL_CLIENTES, allClientes)]);
