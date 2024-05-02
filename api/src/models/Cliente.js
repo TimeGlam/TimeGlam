@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose;
+const { Schema } = mongoose;
 
 const ClienteSchema = new Schema({
   nome: {
@@ -17,11 +17,10 @@ const ClienteSchema = new Schema({
   },
   senha: {
     type: String,
-    required: true,
+    default: null,
   },
   foto: {
     type: String,
-    required: true,
   },
 
   dataNascimento: {
@@ -30,7 +29,7 @@ const ClienteSchema = new Schema({
   },
   genero: {
     type: String,
-    enum: ['M', 'F', 'LGBT'],
+    enum: ['M', 'F', 'O'],
     required: true,
   },
 
@@ -47,7 +46,7 @@ const ClienteSchema = new Schema({
   documento: {
     tipo: {
       type: String,
-      enum: ['individual', 'corporation'],
+      enum: ['cpf', 'cnpj'],
       required: true,
     },
     numero: {

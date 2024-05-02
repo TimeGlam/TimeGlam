@@ -1,9 +1,8 @@
 import mongoose from 'mongoose';
 
-const Schema = mongoose;
+const { Schema } = mongoose;
 
 const AgendamentoSchema = new Schema({
-
   estabelecimentoId: {
     type: mongoose.Types.ObjectId,
     ref: 'Estabelecimento',
@@ -38,7 +37,6 @@ const AgendamentoSchema = new Schema({
   },
   transactionId: {
     type: String,
-    required: true,
   },
   dataCadastro: {
     type: Date,

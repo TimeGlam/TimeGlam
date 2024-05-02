@@ -49,7 +49,7 @@ routes.post('/', async (req, res) => {
     }
     // SE JA EXISTIR UM VINCULO ENTRE COLABORADOR E ESTABELECIMENTO
     if (existentColaborador) {
-      const exitentRelationship = await EstabelecimentoColaborador.findOneAndUpdate(
+      await EstabelecimentoColaborador.findOneAndUpdate(
         {
           estabelecimentoId,
           colaboradorId,
