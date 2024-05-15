@@ -1,9 +1,21 @@
 import { Table } from 'rsuite';
 const { Column, HeaderCell, Cell } = Table;
 
-function TableComponent({ data, config, actions, content, onRowClick }) {
+function TableComponent({
+    data,
+    config,
+    actions,
+    content,
+    loading,
+    onRowClick,
+}) {
     return (
-        <Table data={data} height={400} onRowClick={onRowClick}>
+        <Table
+            loading={loading}
+            data={data}
+            height={400}
+            onRowClick={onRowClick}
+        >
             {config.map((c) => (
                 <Column
                     flexGrow={!c.width ? 1 : 0}
