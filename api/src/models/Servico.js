@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
 const ServicoSchema = new Schema({
   estabelecimentoId: {
     type: mongoose.Types.ObjectId,
-    ref: 'Estabelecimento',
+    ref: "Estabelecimento",
     required: true,
   },
   titulo: {
@@ -34,9 +34,9 @@ const ServicoSchema = new Schema({
   },
   status: {
     type: String,
-    enum: ['A', 'I', 'E'],
+    enum: ["A", "I", "E"],
     required: true,
-    default: 'A',
+    default: "A",
   },
   dataCadastro: {
     type: Date,
@@ -44,5 +44,5 @@ const ServicoSchema = new Schema({
   },
 });
 
-const Servico = mongoose.model('Servico', ServicoSchema);
+const Servico = mongoose.model("Servico", ServicoSchema);
 export default Servico;

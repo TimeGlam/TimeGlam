@@ -5,6 +5,7 @@ import SideBar from './components/Sidebar';
 import Agendamentos from './pages/Agendamentos';
 import Clientes from './pages/Clientes';
 import Colaboradores from './pages/Colaboradores/Index';
+import Servicos from './pages/Servicos/index';
 
 const routes = () => {
     return (
@@ -25,6 +26,11 @@ const routes = () => {
                                 path="/colaboradores"
                                 exact
                                 Component={Colaboradores}
+                            />
+                            <Route
+                                path="/servicos"
+                                exact
+                                Component={Servicos}
                             />
                         </Routes>
                     </BrowserRouter>

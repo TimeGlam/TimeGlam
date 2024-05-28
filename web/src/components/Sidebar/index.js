@@ -44,6 +44,18 @@ function SideBar() {
                         <span> Colaboradores</span>
                     </Link>
                 </li>
+
+                <li>
+                    <Link
+                        to="/servicos"
+                        className={
+                            location.pathname === '/servicos' ? 'active' : ''
+                        }
+                    >
+                        <span className="mdi mdi-content-cut"></span>
+                        <span> Serviços</span>
+                    </Link>
+                </li>
             </ul>
         </sidebar>
     );
