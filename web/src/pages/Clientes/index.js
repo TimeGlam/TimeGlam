@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import 'rsuite/dist/rsuite.min.css';
-import { Button, Drawer } from 'rsuite';
+import { Button, Drawer, Modal } from 'rsuite';
+import InfoRoundIcon from '@rsuite/icons/InfoRound';
 import Table from '../../components/Table/Index';
 import { useDispatch, useSelector } from 'react-redux';
 import {
@@ -8,6 +9,8 @@ import {
     updateCliente,
     filterClientes,
     addCliente,
+    resetCliente,
+    unlinkCliente,
 } from '../../store/modules/cliente/actions';
 
 import moment from 'moment';
@@ -37,6 +40,10 @@ function Clientes() {
     const save = () => {
         dispatch(addCliente());
     };
+
+    const remover = () => {
+        dispatch(unlinkCliente());
+    };
     useEffect(() => {
         dispatch(allClientes());
     }, []);
@@ -63,23 +70,27 @@ function Clientes() {
                                     type="email"
                                     className="form-control"
                                     placeholder="email do cliente"
+                                    disabled={default_state === 'update'}
                                     value={cliente.email}
                                     onChange={(e) => {
                                         setCliente('email', e.target.value);
                                     }}
                                 />
-                                <div className="input-group-append">
-                                    <Button
-                                        appearance="primary"
-                                        loading={form.filtering}
-                                        disabled={form.filtering}
-                                        onClick={() =>
-                                            dispatch(filterClientes())
-                                        }
-                                    >
-                                        Pesquisar
-                                    </Button>
-                                </div>
+
+                                {default_state === 'create' && (
+                                    <div className="input-group-append">
+                                        <Button
+                                            appearance="primary"
+                                            loading={form.filtering}
+                                            disabled={form.filtering}
+                                            onClick={() =>
+                                                dispatch(filterClientes())
+                                            }
+                                        >
+                                            Pesquisar
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                         </div>
                         <div className="form-group col-6">
@@ -263,12 +274,14 @@ function Clientes() {
                         block
                         className="mt-3"
                         color={default_state === 'create' ? 'green' : 'red'}
+                        appearance="primary"
                         size="lg"
                         loading={form.saving}
                         onClick={() => {
                             if (default_state === 'create') {
                                 save();
                             } else {
+                                setComponent('delete', true);
                             }
                         }}
                     >
@@ -277,6 +290,38 @@ function Clientes() {
                     </Button>
                 </Drawer.Body>
             </Drawer>
+            <Modal
+                open={components.delete}
+                onClose={() => setComponent('delete', false)}
+                size="xs"
+            >
+                <Modal.Body>
+                    <InfoRoundIcon
+                        Icon="remind"
+                        style={{
+                            color: '#ffb300',
+                            fontSize: 24,
+                        }}
+                    />{' '}
+                    Tem certeza que deseja deletar?
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button
+                        loading={form.saving}
+                        onClick={() => remover()}
+                        color="red"
+                        appearance="primary"
+                    >
+                        Sim, desejo deletar
+                    </Button>
+                    <Button
+                        onClick={() => setComponent('delete', false)}
+                        appearance="subtle"
+                    >
+                        cancelar
+                    </Button>
+                </Modal.Footer>
+            </Modal>
             <div className="row">
                 <div className="col-12">
                     <div className="w-100 d-flex justify-content-between">
@@ -285,7 +330,7 @@ function Clientes() {
                             <button
                                 className="btn btn-primary btn-lg"
                                 onClick={() => {
-                                    console.log('Botão clicado!');
+                                    dispatch(resetCliente());
                                     dispatch(
                                         updateCliente({
                                             default_state: 'create',

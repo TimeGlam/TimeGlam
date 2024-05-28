@@ -7,7 +7,7 @@ import {
 import types from './types';
 import api from '../../../services/api';
 import consts from '../../../consts';
-import { notification } from '../../../services/rsuite';
+
 export function* allClientes() {
     const { form } = yield select((state) => state.cliente);
     try {
@@ -65,25 +65,27 @@ export function* filterClientes() {
 }
 
 export function* addCliente() {
+    const { cliente, form, components } = yield select(
+        (state) => state.cliente
+    );
+
+    console.log({ cliente, form, components });
+
     try {
-        const { cliente, form, components } = yield select(
-            (state) => state.cliente
-        );
         yield put(updateCliente({ form: { ...form, saving: true } }));
 
         const { data: res } = yield call(api.post, '/cliente', {
             cliente,
             estabelecimentoId: consts.estabelecimentoId,
         });
+
+        console.log(res); // Log da res api
+
         yield put(updateCliente({ form: { ...form, saving: false } }));
 
         if (res.error) {
-            // ALERT DO RSUITE
-            notification('error', {
-                placement: 'topStart',
-                title: 'Ops...',
-                description: res.message,
-            });
+            console.error(res.message);
+            alert(res.message);
             return false;
         }
 
@@ -91,23 +93,64 @@ export function* addCliente() {
         yield put(
             updateCliente({ components: { ...components, drawer: false } })
         );
-        yield put(resetCliente());
 
-        notification('success', {
-            placement: 'topStart',
-            title: 'Feitoooo!!',
-            description: 'Cliente salvo com sucesso!',
-        });
+        yield put(resetCliente());
     } catch (err) {
-        notification('error', {
-            placement: 'topStart',
-            title: 'Ops...',
-            description: err.message,
-        });
+        console.error(err.message);
+        yield put(updateCliente({ form: { ...form, saving: false } }));
+        alert(err.message);
+    }
+}
+
+export function* unlinkCliente() {
+    const { cliente, form, components } = yield select(
+        (state) => state.cliente
+    );
+
+    try {
+        yield put(updateCliente({ form: { ...form, saving: true } }));
+
+        const { data: res } = yield call(
+            api.delete,
+            `/cliente/vinculo/${cliente.vinculoId}`
+        );
+
+        console.log(res); // Log response
+
+        // atualiza o estado
+        yield put(
+            updateCliente({
+                form: { ...form, saving: false },
+                components: { ...components, delete: false },
+            })
+        );
+
+        if (res.error) {
+            console.error(res.message); // Log do erro
+            alert(res.message);
+            return false;
+        }
+
+        // Atualiza lista de clientes
+        yield put(actionAllClientes());
+        // Fechando o drawer
+        yield put(
+            updateCliente({
+                components: { ...components, drawer: false, delete: false },
+            })
+        );
+
+        // Reset cliente
+        yield put(resetCliente());
+    } catch (err) {
+        console.error(err.message); // Log erro
+        yield put(updateCliente({ form: { ...form, saving: false } })); // saving false caso de erro
+        alert(err.message);
     }
 }
 export default all([
     takeLatest(types.ALL_CLIENTES, allClientes),
     takeLatest(types.FILTER_CLIENTES, filterClientes),
     takeLatest(types.ADD_CLIENTE, addCliente),
+    takeLatest(types.UNLINK_CLIENTE, unlinkCliente),
 ]);

@@ -4,6 +4,7 @@ import Header from './components/Header';
 import SideBar from './components/Sidebar';
 import Agendamentos from './pages/Agendamentos';
 import Clientes from './pages/Clientes';
+import Colaboradores from './pages/Colaboradores/Index';
 
 const routes = () => {
     return (
@@ -19,6 +20,11 @@ const routes = () => {
                                 path="/clientes"
                                 exact
                                 Component={Clientes}
+                            />
+                            <Route
+                                path="/colaboradores"
+                                exact
+                                Component={Colaboradores}
                             />
                         </Routes>
                     </BrowserRouter>

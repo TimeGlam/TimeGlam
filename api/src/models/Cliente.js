@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
@@ -29,15 +29,15 @@ const ClienteSchema = new Schema({
   },
   genero: {
     type: String,
-    enum: ['M', 'F', 'O'],
+    enum: ["M", "F", "O"],
     required: true,
   },
 
   status: {
     type: String,
-    enum: ['A', 'I'],
+    enum: ["A", "I"],
     required: true,
-    default: 'A',
+    default: "A",
   },
   dataCadastro: {
     type: Date,
@@ -46,7 +46,7 @@ const ClienteSchema = new Schema({
   documento: {
     tipo: {
       type: String,
-      enum: ['cpf', 'cnpj'],
+      enum: ["cpf", "cnpj"],
       required: true,
     },
     numero: {
@@ -60,8 +60,9 @@ const ClienteSchema = new Schema({
     cep: String,
     numero: String,
     pais: String,
+    logradouro: String,
   },
 });
 
-const Cliente = mongoose.model('Cliente', ClienteSchema);
+const Cliente = mongoose.model("Cliente", ClienteSchema);
 export default Cliente;

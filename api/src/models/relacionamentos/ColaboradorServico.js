@@ -1,23 +1,23 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
 const ColaboradorServicoSchema = new Schema({
   colaboradorId: {
     type: mongoose.Types.ObjectId,
-    ref: 'Colaborador',
+    ref: "Colaborador",
     required: true,
   },
   servicoId: {
     type: mongoose.Types.ObjectId,
-    ref: 'Servico',
+    ref: "Servico",
     required: true,
   },
   status: {
     type: String,
-    enum: ['A', 'I'],
+    enum: ["A", "I"],
     required: true,
-    default: 'A',
+    default: "A",
   },
   dataCadastro: {
     type: Date,
@@ -26,7 +26,7 @@ const ColaboradorServicoSchema = new Schema({
 });
 
 const ColaboradorServico = mongoose.model(
-  'ColaboradorServico',
-  ColaboradorServicoSchema,
+  "ColaboradorServico",
+  ColaboradorServicoSchema
 );
 export default ColaboradorServico;

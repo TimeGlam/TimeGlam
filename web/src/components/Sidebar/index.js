@@ -1,5 +1,6 @@
 import logo from '../../assets/timeglamLogo.png';
 import { Link, useLocation } from 'react-router-dom';
+import MemberIcon from '@rsuite/icons/Member';
 
 function SideBar() {
     const location = useLocation();
@@ -13,7 +14,7 @@ function SideBar() {
                         to="/"
                         className={location.pathname === '/' ? 'active' : ''}
                     >
-                        <span className="mdi mdi-calendar-check"></span>
+                        <span className="mdi mdi-calendar-multiselect"></span>
                         <span> Agendamentos</span>
                     </Link>
                 </li>
@@ -25,8 +26,22 @@ function SideBar() {
                             location.pathname === '/clientes' ? 'active' : ''
                         }
                     >
-                        <span className="mdi mdi-account-multiple"></span>
+                        <span className="mdi mdi-account-group-outline"></span>
                         <span> Clientes</span>
+                    </Link>
+                </li>
+
+                <li>
+                    <Link
+                        to="/colaboradores"
+                        className={
+                            location.pathname === '/colaboradores'
+                                ? 'active'
+                                : ''
+                        }
+                    >
+                        <span className="mdi mdi-account-hard-hat"></span>
+                        <span> Colaboradores</span>
                     </Link>
                 </li>
             </ul>
