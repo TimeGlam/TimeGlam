@@ -21,6 +21,7 @@ import {
     addServico,
     resetServico,
     removeServico,
+    removeArquivo,
 } from '../../store/modules/servicos/actions';
 
 import consts from '../../consts';
@@ -183,7 +184,21 @@ function Servicos() {
                                         url: `${consts.bucketUrl}/${servico?.arquivo}`,
                                     })
                                 )}
-                                onChange={(files) => console.log(files)}
+                                onChange={(files) => {
+                                    const arquivos = files
+                                        .filter((file) => file.blobFile)
+                                        .map((file) => file.blobFile);
+
+                                    setServico('arquivos', arquivos);
+                                }}
+                                onRemove={(file) => {
+                                    if (
+                                        default_state === 'update' &&
+                                        file.url
+                                    ) {
+                                        dispatch(removeArquivo(file.name));
+                                    }
+                                }}
                             >
                                 <button>
                                     <Icon as={FaCamera} size="2em" />
@@ -191,6 +206,29 @@ function Servicos() {
                             </Uploader>
                         </div>
                     </div>
+                    <Button
+                        loading={form.saving}
+                        color={default_state === 'create' ? 'green' : 'primary'}
+                        size="lg"
+                        block
+                        onClick={() => save()}
+                        className="mt-3"
+                    >
+                        {default_state === 'create' ? 'Salvar' : 'Atualizar'}
+                        Serviço
+                    </Button>
+                    {default_state === 'update' && (
+                        <Button
+                            loading={form.saving}
+                            color="red"
+                            size="lg"
+                            block
+                            onClick={() => setComponent('delete', true)}
+                            className="mt-1"
+                        >
+                            Remover
+                        </Button>
+                    )}
                 </Drawer.Body>
             </Drawer>
 

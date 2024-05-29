@@ -32,35 +32,30 @@ export function* allServicos() {
 }
 
 export function* addServico() {
-    const { colaborador, form, components, default_state } = yield select(
-        (state) => state.colaborador
+    const { servico, form, components, default_state } = yield select(
+        (state) => state.servico
     );
 
-    console.log({ colaborador, form, components });
+    console.log({ servico, form, components });
 
     try {
         yield put(updateServico({ form: { ...form, saving: true } }));
 
-        let res = {};
-        if (default_state === 'create') {
-            const response = yield call(api.post, '/colaborador', {
-                colaborador,
-                estabelecimentoId: consts.estabelecimentoId,
-            });
+        const form = new FormData();
 
-            res = response.data;
-        } else {
-            const response = yield call(
-                api.put,
-                `/colaborador/${colaborador._id}`,
-                {
-                    vinculo: colaborador.vinculo,
-                    vinculoId: colaborador.vinculoId,
-                    especialidade: colaborador.especialidades,
-                }
-            );
-            res = response.data;
+        form.append('servico', JSON.stringify(servico));
+        form.append('estabelecimentoId', consts.estabelecimentoId);
+
+        for (let index = 0; index < servico.arquivos.length; index++) {
+            const arquivo = servico.arquivos[index];
+            form.append(`arquivo_${index}`, arquivo);
         }
+
+        const { data: res } = yield call(
+            api[default_state === 'create' ? 'post' : 'put'],
+            default_state === 'create' ? `/servico` : `/servico/${servico._id}`,
+            form
+        );
 
         console.log(res);
 
@@ -98,9 +93,8 @@ export function* removeServico() {
             `/colaborador/vinculo/${colaborador.vinculoId}`
         );
 
-        console.log(res); // Log response
+        console.log(res);
 
-        // atualiza o estado
         yield put(
             updateServico({
                 form: { ...form, saving: false },
@@ -109,12 +103,11 @@ export function* removeServico() {
         );
 
         if (res.error) {
-            console.error(res.message); // Log do erro
+            console.error(res.message);
             alert(res.message);
             return false;
         }
 
-        // Atualiza lista de clientes
         yield put(actionAllServicos());
         // Fechando o drawer
         yield put(
@@ -126,13 +119,42 @@ export function* removeServico() {
         // Reset cliente
         yield put(resetServico());
     } catch (err) {
-        console.error(err.message); // Log erro
-        yield put(updateServico({ form: { ...form, saving: false } })); // saving false caso de erro
+        console.error(err.message);
+        yield put(updateServico({ form: { ...form, saving: false } }));
         alert(err.message);
     }
 }
 
-export function* removeArquivo() {}
+export function* removeArquivo({ key }) {
+    const { form } = yield select((state) => state.servico);
+
+    try {
+        yield put(updateServico({ form: { ...form, saving: true } }));
+
+        const { data: res } = yield call(api.post, `/servico/delete-arquivo/`, {
+            key,
+        });
+
+        console.log(res); // Log response
+
+        // atualiza o estado
+        yield put(
+            updateServico({
+                form: { ...form, saving: false },
+            })
+        );
+
+        if (res.error) {
+            console.error(res.message);
+            alert(res.message);
+            return false;
+        }
+    } catch (err) {
+        console.error(err.message); // Log erro
+        yield put(updateServico({ form: { ...form, saving: false } }));
+        alert(err.message);
+    }
+}
 
 export default all([
     takeLatest(types.ALL_SERVICOS, allServicos),

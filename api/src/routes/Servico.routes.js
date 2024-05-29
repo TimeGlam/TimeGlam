@@ -1,13 +1,13 @@
-import express from 'express';
-import multer from 'multer';
-import { multerConfig, s3 } from '../config/multer';
-import Arquivos from '../models/Arquivos';
-import Servico from '../models/Servico';
+import express from "express";
+import multer from "multer";
+import { multerConfig, s3 } from "../config/multer";
+import Arquivos from "../models/Arquivos";
+import Servico from "../models/Servico";
 
 const routes = express.Router();
 const upload = multer(multerConfig);
 
-routes.post('/', upload.any(), async (req, res) => {
+routes.post("/", upload.any(), async (req, res) => {
   try {
     const { estabelecimentoId } = req.body;
     const arquivos = [];
@@ -27,7 +27,7 @@ routes.post('/', upload.any(), async (req, res) => {
     // CRIAR ARQUIVO
     const arquivosDocument = arquivos.map((arquivo) => ({
       referenceId: servico._id,
-      model: 'Servico',
+      model: "Servico",
       arquivo,
     }));
     console.log(arquivosDocument);
@@ -39,7 +39,7 @@ routes.post('/', upload.any(), async (req, res) => {
   }
 });
 
-routes.put('/:id', upload.any(), async (req, res) => {
+routes.put("/:id", upload.any(), async (req, res) => {
   try {
     const arquivos = [];
 
@@ -57,7 +57,7 @@ routes.put('/:id', upload.any(), async (req, res) => {
     // CRIAR ARQUIVO
     const arquivosDocument = arquivos.map((arquivo) => ({
       referenceId: req.params.id,
-      model: 'Servico',
+      model: "Servico",
       arquivo,
     }));
     console.log(arquivosDocument);
@@ -68,17 +68,17 @@ routes.put('/:id', upload.any(), async (req, res) => {
     res.status(500).json({ error: true, message: err.message });
   }
 });
-routes.get('/estabelecimento/:estabelecimentoId', async (req, res) => {
+routes.get("/estabelecimento/:estabelecimentoId", async (req, res) => {
   try {
     const servicosEstabelecimento = [];
     const servicos = await Servico.find({
       estabelecimentoId: req.params.estabelecimentoId,
-      status: { $ne: 'E' },
+      status: { $ne: "E" },
     });
 
     for (const servico of servicos) {
       const arquivos = await Arquivos.find({
-        model: 'Servico',
+        model: "Servico",
         referenceId: servico._id,
       });
       servicosEstabelecimento.push({ ...servico._doc, arquivos });
@@ -90,20 +90,20 @@ routes.get('/estabelecimento/:estabelecimentoId', async (req, res) => {
     res.json({ error: true, message: err.message });
   }
 });
-routes.post('/delete-arquivo', async (req, res) => {
+routes.post("/delete-arquivo/", async (req, res) => {
   try {
-    const { id } = req.body;
+    const { key } = req.body;
 
-    const path = id;
+    const path = key;
     const params = {
-      Bucket: 'timeglam-dev',
+      Bucket: "timeglam-dev",
       Key: path,
     };
 
     await s3.deleteObject(params).promise();
 
     await Arquivos.findOneAndDelete({
-      arquivo: id,
+      arquivo: key,
     });
 
     res.json({ error: false });
@@ -112,10 +112,10 @@ routes.post('/delete-arquivo', async (req, res) => {
   }
 });
 
-routes.delete('/:id', async (req, res) => {
+routes.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    await Servico.findByIdAndUpdate(id, { status: 'E' });
+    await Servico.findByIdAndUpdate(id, { status: "E" });
 
     await Arquivos.findOneAndDelete({
       arquivo: id,
