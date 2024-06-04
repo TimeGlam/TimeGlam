@@ -1,13 +1,13 @@
-import React from 'react';
-import {useDispatch} from 'react-redux';
-import {updateForm} from '../../../../store/modules/salao/actions';
-import {Box, Text, Cover, Button} from '../../../styles';
-import theme from '../../../../styles/theme.json';
+import React from "react";
+import { useDispatch } from "react-redux";
+import { updateForm } from "../../../store/modules/salao/actions";
+import { Box, Text, Cover, Button } from "../../../styles/";
+import theme from "../../../styles/theme.json";
 
-const EspecialistasPicker = ({colaboradores, agendamento}) => {
+const EspecialistasPicker = ({ colaboradores, agendamento }) => {
   const dispatch = useDispatch();
   const colaborador = colaboradores.filter(
-    c => c._id === agendamento.colaboradorId,
+    (c) => c._id === agendamento.colaboradorId
   )[0];
 
   return (
@@ -29,11 +29,12 @@ const EspecialistasPicker = ({colaboradores, agendamento}) => {
           <Box>
             <Button
               uppercase={false}
-              onPress={() => dispatch(updateForm('modalEspecialista', true))}
+              onPress={() => dispatch(updateForm("modalEspecialista", true))}
               textColor="muted"
               background={theme.colors.light}
               mode="contained"
-              block>
+              block
+            >
               Trocar Especialista
             </Button>
           </Box>

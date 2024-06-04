@@ -1,8 +1,8 @@
-import React from 'react';
-import {Flatilist} from 'react-native';
-import {Box, Title, Text, Touchable} from '../../styles';
-import util from '../../util';
-import theme from '../../styles/theme.json';
+import React from "react";
+import { FlatList } from "react-native";
+import { Box, Title, Text, Touchable } from "../../styles";
+import util from "../../util";
+import theme from "../../styles/theme.json";
 
 const DateTime = () => {
   return (
@@ -21,9 +21,9 @@ const DateTime = () => {
           paddingLeft: 20,
           height: 85,
         }}
-        renderItem={({item}) => {
+        renderItem={({ item }) => {
           const date = moment(Object.keys(item)[0]);
-          const dateISO = moment(date).format('YYYY-MM-DD');
+          const dateISO = moment(date).format("YYYY-MM-DD");
           const selected = dateISO === dataSelecionada;
 
           return (
@@ -32,21 +32,22 @@ const DateTime = () => {
               width="70px"
               height="80px"
               spacing="0 10px 0 0"
-              background={selected ? 'primary' : 'light'}
+              background={selected ? "primary" : "light"}
               rounded="10px"
               direction="column"
               justify="center"
               align="center"
               border={`1px solid ${util.toAlpha(theme.colors.muted, 20)}`}
-              onPress={() => setAgendamentoData(dateISO)}>
-              <Text small color={selected ? 'light' : undefined}>
+              onPress={() => setAgendamentoData(dateISO)}
+            >
+              <Text small color={selected ? "light" : undefined}>
                 {util.diasSemana[date.day()]}
               </Text>
-              <Title small color={selected ? 'light' : undefined}>
-                {date.format('DD')}
+              <Title small color={selected ? "light" : undefined}>
+                {date.format("DD")}
               </Title>
-              <Text small color={selected ? 'light' : undefined}>
-                {date.format('MMMM')}
+              <Text small color={selected ? "light" : undefined}>
+                {date.format("MMMM")}
               </Text>
             </Touchable>
           );
@@ -55,13 +56,13 @@ const DateTime = () => {
       />
       <Box hasPadding direction="column" height="60px">
         <Text bold color="dark">
-          Que horas?{' '}
+          Que horas?{" "}
           <Text small composed>
-            Duração aprox.{' '}
+            Duração aprox.{" "}
             <Text small underline composed>
               {moment(servico?.duracao)
-                .format('H:mm')
-                .replace(/^(?:0:)?0?/, '')}
+                .format("H:mm")
+                .replace(/^(?:0:)?0?/, "")}
               mins
             </Text>
           </Text>
@@ -78,9 +79,9 @@ const DateTime = () => {
           paddingLeft: 20,
           height: 80,
         }}
-        renderItem={({item, index}) => (
+        renderItem={({ item, index }) => (
           <Box direction="column" spacing="0 10px 0 0">
-            {item.map(horario => {
+            {item.map((horario) => {
               const selected = horario === horaSelecionada;
               return (
                 <Touchable
@@ -88,14 +89,15 @@ const DateTime = () => {
                   width="100px"
                   height="35px"
                   spacing="0 0 5px 0"
-                  background={selected ? 'primary' : 'light'}
+                  background={selected ? "primary" : "light"}
                   rounded="7px"
                   direction="column"
                   justify="center"
                   align="center"
                   border={`1px solid ${util.toAlpha(theme.colors.muted, 20)}`}
-                  onPress={() => setAgendamentoData(horario, true)}>
-                  <Text color={selected ? 'light' : undefined}>{horario}</Text>
+                  onPress={() => setAgendamentoData(horario, true)}
+                >
+                  <Text color={selected ? "light" : undefined}>{horario}</Text>
                 </Touchable>
               );
             })}

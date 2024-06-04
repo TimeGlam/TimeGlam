@@ -1,4 +1,4 @@
 export default {
-  estabelecimentoId: '65dab55776929dc9681186d5',
-  clienteId: '6615736168937772dca51391',
+  estabelecimentoId: "65dab55776929dc9681186d5",
+  clienteId: "664e2478ef30d1dbbe8e6568",
 };

@@ -1,28 +1,10 @@
-{
-  "colors": {
-    "primary": " #0d1e29",
-    "Light": "#ffff ",
-    "succes": " #123144 ",
-    " danger": "#CA0505 ",
-    "dark": "#0d1e29 ",
-    "muted": "#BECDD7 "
-  },
-  "fonts": {
-    "regular": {
-      "fontFamily": "ubuntu-Regular",
-      "fontWeight": "normal"
-    },
-    "medium": {
-      "fontFamily": "ubuntu-Medium",
-      "fontWeight": "normal"
-    },
-    "light": {
-      "fontFamily": "ubuntu-Light",
-      "fontWeight": "normal"
-    },
-    "bold": {
-      "fontFamily": "ubuntu-Bold",
-      "fontWeight": "normal"
+  {
+    "colors": {
+      "primary": " #0d1e29",
+      "Light": "#ffff ",
+      "succes": " #123144 ",
+      " danger": "#CA0505 ",
+      "dark": "#0d1e29 ",
+      "muted": "#BECDD7 "
     }
   }
-}

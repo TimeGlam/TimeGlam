@@ -1,43 +1,62 @@
-import React from 'react';
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Linking, Share, ImageBackground } from "react-native";
 import {
-  Cover,
-  GradientView,
-  Title,
   Text,
+  Title,
   Badge,
-  Touchable,
+  Box,
   Button,
+  Touchable,
   TextInput,
-} from '../../styles';
-import Icon from 'react-native-vector-icon/materialCommunityIcons';
-import theme from '../../styles/theme.json';
-import {useSelector} from 'react-redux';
+  CustomImageBackground,
+  GradientView,
+} from "../../styles";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { updateForm } from "../../store/modules/salao/actions";
+import theme from "../../styles/theme.json";
 
 const Header = () => {
   const dispatch = useDispatch();
-  const {salao, servicos, form} = useSelector(state => state.salao);
+  const { estabelecimento, servicos, form } = useSelector(
+    (state) => state.estabelecimento
+  );
+
+  const openGps = (coords) => {
+    Linking.openURL(
+      `https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=${coords[0]},${coords[1]}`
+    );
+  };
   return (
     <>
-      <Cover background={salao.capa}>
+      <CustomImageBackground
+        source={{ uri: estabelecimento.capa }}
+        style={{ width: "100%", height: 300 }}
+      >
         <GradientView
-          colors={['#2123f33', '#21233fe6']}
           hasPadding
-          justify="flex-end">
-          <Badge color={salao.isOpened ? 'success' : 'danger'}>
-            {salao.isOpened ? 'ABERTO' : 'FECHADO'}
+          justify="flex-end"
+          colors={["#21232F33", "#21232FE6"]}
+        >
+          <Badge color={estabelecimento.isOpened ? "success" : "danger"}>
+            {estabelecimento.isOpened ? "ABERTO" : "FECHADO"}
           </Badge>
-          <Title color="light">{salao.nome}</Title>
+          <Title color="light">{estabelecimento.nome}</Title>
           <Text color="light">
-            {salao?.endereco?.cidade}• {salao.distance} kms
+            {estabelecimento?.endereco?.cidade} •
+            {estabelecimento.distanceLocation}
+            kms
           </Text>
         </GradientView>
-      </Cover>
+      </CustomImageBackground>
       <Box background="light" align="center">
         <Box hasPadding justify="space-between">
           <Touchable
+            style={{ width: "50px" }}
             direction="column"
             align="center"
-            onPress={() => Linking.openURL(`tel:${salao.telefone}`)}>
+            onPress={() => Linking.openURL(`tel:${estabelecimento.telefone}`)}
+          >
             <Icon name="phone" size={24} color={theme.colors.muted} />
             <Text small spacing="10px 0 0">
               Ligar
@@ -46,7 +65,9 @@ const Header = () => {
           <Touchable
             direction="column"
             align="center"
-            onPress={() => openGps(salao?.geo?.coordinates)}>
+            style={{ width: "50px" }}
+            onPress={() => openGps(estabelecimento?.geo?.coordinates)}
+          >
             <Icon name="map-marker" size={24} color={theme.colors.muted} />
             <Text small spacing="10px 0 0">
               Visitar
@@ -55,11 +76,13 @@ const Header = () => {
           <Touchable
             direction="column"
             align="center"
+            style={{ width: "50px" }}
             onPress={() =>
               Share.share({
-                message: `${salao.nome}.`,
+                message: `${estabelecimento.nome} - Salão na caralho.`,
               })
-            }>
+            }
+          >
             <Icon name="share" size={24} color={theme.colors.muted} />
             <Text small spacing="10px 0 0">
               Enviar
@@ -71,7 +94,8 @@ const Header = () => {
             icon="clock-check-outline"
             background="success"
             mode="contained"
-            uppercase={false}>
+            uppercase={false}
+          >
             Agendar Agora
           </Button>
           <Text small spacing="10px 0 0 0">
@@ -84,13 +108,14 @@ const Header = () => {
         <Title small>Serviços ({servicos.length})</Title>
         <TextInput
           value={form.inputFiltro}
-          onChangeText={value => dispatch(updateForm('inputFiltro', value))}
-          onFocus={() => dispatch(updateForm('inputFiltroFoco', true))}
-          onBlur={() => dispatch(updateForm('inputFiltroFoco', false))}
+          onChangeText={(value) => dispatch(updateForm("inputFiltro", value))}
+          onFocus={() => dispatch(updateForm("inputFiltroFoco", true))}
+          onBlur={() => dispatch(updateForm("inputFiltroFoco", false))}
           placeholder="Digite o nome do serviço..."
         />
       </Box>
     </>
   );
 };
+
 export default Header;

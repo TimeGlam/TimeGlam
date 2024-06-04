@@ -1,26 +1,62 @@
-import React from 'react';
-import {Text, Box, Touchable} from '../../styles';
-import {Button} from 'react-native-paper';
-const servico = () => {
+import React from "react";
+
+import { Text, Box, Button, Cover, Spacer, Touchable } from "../../styles";
+import moment from "moment";
+import util from "../../util";
+import {
+  updateAgendamento,
+  filterAgenda,
+  resetAgendamento,
+} from "../../store/modules/salao/actions";
+import { useDispatch } from "react-redux";
+
+const Servico = ({ item }) => {
+  const dispatch = useDispatch();
+
   return (
-    <Touchable height="100px" hasPaddding aling="center" background="light">
-      <Cover image="https://th.bing.com/th/id/OIP.eao2CNOd22X5_RHH-Y2L6AAAAA?rs=1&pid=ImgDetMain" />
-      <Box direction="Column">
+    <Touchable
+      align="center"
+      hasPadding
+      height="100px"
+      background="light"
+      onPress={() => {
+        dispatch(resetAgendamento());
+        dispatch(updateAgendamento("servicoId", item?._id));
+        dispatch(filterAgenda());
+      }}
+    >
+      <Cover
+        image={
+          item?.arquivos
+            ? `${util.AWS.bucketURL}/${item?.arquivos[0]?.arquivo}`
+            : ""
+        }
+      />
+      <Box direction="column">
         <Text bold color="dark">
-          Corte de Cabelo Feminino
+          {item?.titulo}
         </Text>
-        <Text Small>R$ 45</Text>
+        <Spacer />
+        <Text small>
+          R$ {item?.preco} •{" "}
+          {moment(item?.duracao)
+            .format("H:mm")
+            .replace(/^(?:0:)?0?/, "")}{" "}
+          mins
+        </Text>
       </Box>
-      <Box>
+      <Box direction="column" align="flex-end">
         <Button
-          icon="cloxk-check-outiline"
-          background="sucess"
+          icon="clock-check-outline"
+          background="success"
+          textColor="light"
           mode="contained"
-          textColor="leight">
-          Agendar
+        >
+          AGENDAR
         </Button>
       </Box>
     </Touchable>
   );
 };
-export default servico;
+
+export default Servico;
