@@ -303,7 +303,7 @@ function Clientes() {
                             fontSize: 24,
                         }}
                     />{' '}
-                    Tem certeza que deseja deletar?
+                    Tem certeza que deseja remover?
                 </Modal.Body>
                 <Modal.Footer>
                     <Button
@@ -312,7 +312,7 @@ function Clientes() {
                         color="red"
                         appearance="primary"
                     >
-                        Sim, desejo deletar
+                        Sim, desejo remover
                     </Button>
                     <Button
                         onClick={() => setComponent('delete', false)}

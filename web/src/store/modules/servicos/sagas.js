@@ -7,6 +7,7 @@ import {
 import types from './types';
 import api from '../../../services/api';
 import consts from '../../../consts';
+import servico from './reducer';
 
 export function* allServicos() {
     const { form } = yield select((state) => state.servico);
@@ -36,28 +37,34 @@ export function* addServico() {
         (state) => state.servico
     );
 
-    console.log({ servico, form, components });
-
     try {
-        yield put(updateServico({ form: { ...form, saving: true } }));
+        yield put(updateServico({ form: { ...form, filtering: true } }));
 
-        const form = new FormData();
+        const formData = new FormData();
 
-        form.append('servico', JSON.stringify(servico));
-        form.append('estabelecimentoId', consts.estabelecimentoId);
+        formData.append(
+            'servico',
+            JSON.stringify({
+                ...servico,
+                estabelecimentoId: consts.estabelecimentoId,
+            })
+        );
+        formData.append('estabelecimentoId', consts.estabelecimentoId);
 
         for (let index = 0; index < servico.arquivos.length; index++) {
             const arquivo = servico.arquivos[index];
-            form.append(`arquivo_${index}`, arquivo);
+            formData.append(`arquivo_${index}`, arquivo);
         }
 
-        const { data: res } = yield call(
-            api[default_state === 'create' ? 'post' : 'put'],
-            default_state === 'create' ? `/servico` : `/servico/${servico._id}`,
-            form
-        );
+        console.log('Dados do serviço e formulário:', servico, form);
+        console.log('FormData:', formData);
 
-        console.log(res);
+        const apiEndpoint =
+            default_state === 'create' ? '/servico' : `/servico/${servico._id}`;
+        const method = default_state === 'create' ? 'post' : 'put';
+        const { data: res } = yield call(api[method], apiEndpoint, formData);
+
+        console.log('Resposta da API:', res);
 
         yield put(updateServico({ form: { ...form, saving: false } }));
 
@@ -71,7 +78,6 @@ export function* addServico() {
         yield put(
             updateServico({ components: { ...components, drawer: false } })
         );
-
         yield put(resetServico());
     } catch (err) {
         console.error(err.message);
@@ -81,26 +87,18 @@ export function* addServico() {
 }
 
 export function* removeServico() {
-    const { colaborador, form, components } = yield select(
-        (state) => state.colaborador
+    const { servico, form, components } = yield select(
+        (state) => state.servico
     );
 
     try {
         yield put(updateServico({ form: { ...form, saving: true } }));
 
-        const { data: res } = yield call(
-            api.delete,
-            `/colaborador/vinculo/${colaborador.vinculoId}`
-        );
+        const { data: res } = yield call(api.delete, `/servico/${servico._id}`);
 
         console.log(res);
 
-        yield put(
-            updateServico({
-                form: { ...form, saving: false },
-                components: { ...components, delete: false },
-            })
-        );
+        yield put(updateServico({ form: { ...form, saving: false } }));
 
         if (res.error) {
             console.error(res.message);

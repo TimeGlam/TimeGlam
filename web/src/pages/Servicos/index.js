@@ -80,7 +80,7 @@ function Servicos() {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Título do serviço"
+                                placeholder="Título"
                                 value={servico.titulo}
                                 onChange={(e) => {
                                     setServico('titulo', e.target.value);
@@ -93,7 +93,7 @@ function Servicos() {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Preço do serviço"
+                                placeholder="Preço"
                                 value={servico.preco}
                                 onChange={(e) => {
                                     setServico('preco', e.target.value);
@@ -118,7 +118,7 @@ function Servicos() {
                             <input
                                 type="text"
                                 className="form-control"
-                                placeholder="Comissão serviço"
+                                placeholder="Comissão"
                                 value={servico.comissao}
                                 onChange={(e) => {
                                     setServico('comissao', e.target.value);
@@ -131,14 +131,20 @@ function Servicos() {
                             <DatePicker
                                 block
                                 format="HH:mm"
-                                value={moment(servico.duracao).toDate()}
+                                value={moment()
+                                    .startOf('day')
+                                    .add(servico.duracao, 'minutes')
+                                    .toDate()}
                                 hideMinutes={(min) => ![0, 30].includes(min)}
                                 onChange={(e) => {
-                                    console.log(
-                                        'Valor de servico.duracao:',
-                                        servico.duracao
-                                    );
-                                    setServico('duracao', e);
+                                    // convertendo de novo essa desgraca de
+                                    // calculo dos minutos da hora selecionada nessa desgraca
+                                    const selectedHour = moment(e).hours();
+                                    const selectedMinute = moment(e).minutes();
+                                    const selectedDuration =
+                                        selectedHour * 60 + selectedMinute;
+
+                                    setServico('duracao', selectedDuration);
                                 }}
                             />
                         </div>
@@ -180,7 +186,7 @@ function Servicos() {
                                 defaultFileList={servico.arquivos.map(
                                     (servico, index) => ({
                                         name: servico?.arquivo,
-                                        key: index,
+                                        filekey: index,
                                         url: `${consts.bucketUrl}/${servico?.arquivo}`,
                                     })
                                 )}
@@ -278,6 +284,7 @@ function Servicos() {
                                             default_state: 'create',
                                         })
                                     );
+                                    dispatch(updateServico(resetServico()));
                                     setComponent('drawer', true);
                                 }}
                             >
@@ -318,8 +325,13 @@ function Servicos() {
                                 label: 'Duracao',
                                 key: 'duracao',
                                 sortable: true,
-                                content: (servico) =>
-                                    moment(servico.duracao).format('HH:mm'),
+                                content: (servico) => {
+                                    const duracaoHoras = Math.floor(
+                                        servico.duracao / 60
+                                    );
+                                    const duracaoMinutos = servico.duracao % 60;
+                                    return `${duracaoHoras}h ${duracaoMinutos}min`;
+                                },
                             },
 
                             {
@@ -352,7 +364,6 @@ function Servicos() {
                                     default_state: 'update',
                                 })
                             );
-                            console.log('horario', servico.duracao);
                             setComponent('drawer', true);
                         }}
                     />

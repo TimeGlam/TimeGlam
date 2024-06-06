@@ -1,11 +1,16 @@
 import { useEffect } from 'react';
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
+import format from 'date-fns/format';
+import parse from 'date-fns/parse';
+import startOfWeek from 'date-fns/startOfWeek';
+import getDay from 'date-fns/getDay';
+import pt_br from 'date-fns/locale/pt-BR';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { filterAgendamento } from '../../store/modules/agendamento/actions';
 import utils from '../../utils';
-const localizer = momentLocalizer(moment);
+
 function Agendamentos() {
     const dispatch = useDispatch();
     const { agendamentos } = useSelector((state) => state.agendamento);
@@ -49,6 +54,26 @@ function Agendamentos() {
         //    start: moment().weekday(0).format('YYYY-MM-DD'),
         //  end: moment().weekday(6).format('YYYY-MM-DD'),
     }, []);
+
+    const locales = {
+        'pt-BR': pt_br,
+    };
+
+    const localizer = dateFnsLocalizer({
+        format,
+        parse,
+        startOfWeek,
+        getDay,
+        locales,
+    });
+    const messages = {
+        today: 'Hoje',
+        previous: 'Anterior',
+        next: 'Próximo',
+        month: 'Mês',
+        week: 'Semana',
+        day: 'Dia',
+    };
     return (
         <div className="col p-5 overflow-auto h-100">
             <div className="row">
@@ -67,6 +92,8 @@ function Agendamentos() {
                         selectable={true}
                         popup
                         style={{ height: 600 }}
+                        culture="pt-BR"
+                        messages={messages}
                     />
                 </div>
             </div>
