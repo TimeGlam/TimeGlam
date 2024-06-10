@@ -5,9 +5,9 @@ import parse from 'date-fns/parse';
 import startOfWeek from 'date-fns/startOfWeek';
 import getDay from 'date-fns/getDay';
 import pt_br from 'date-fns/locale/pt-BR';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
 import { filterAgendamento } from '../../store/modules/agendamento/actions';
 import utils from '../../utils';
 

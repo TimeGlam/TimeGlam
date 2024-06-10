@@ -7,7 +7,6 @@ import {
 import types from './types';
 import api from '../../../services/api';
 import consts from '../../../consts';
-import servico from './reducer';
 
 export function* allServicos() {
     const { form } = yield select((state) => state.servico);

@@ -56,6 +56,17 @@ function SideBar() {
                         <span> Serviços</span>
                     </Link>
                 </li>
+                <li>
+                    <Link
+                        to="/horarios"
+                        className={
+                            location.pathname === '/horarios' ? 'active' : ''
+                        }
+                    >
+                        <span className="mdi mdi-clock-outline"></span>
+                        <span> Horários</span>
+                    </Link>
+                </li>
             </ul>
         </sidebar>
     );

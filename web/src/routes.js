@@ -6,7 +6,7 @@ import Agendamentos from './pages/Agendamentos';
 import Clientes from './pages/Clientes';
 import Colaboradores from './pages/Colaboradores/Index';
 import Servicos from './pages/Servicos/index';
-
+import Horarios from './pages/horarios/index';
 const routes = () => {
     return (
         <>
@@ -31,6 +31,11 @@ const routes = () => {
                                 path="/servicos"
                                 exact
                                 Component={Servicos}
+                            />
+                            <Route
+                                path="/horarios"
+                                exact
+                                Component={Horarios}
                             />
                         </Routes>
                     </BrowserRouter>
