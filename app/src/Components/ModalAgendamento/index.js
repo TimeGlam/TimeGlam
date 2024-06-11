@@ -45,24 +45,25 @@ const ModalAgendamento = () => {
     }
   };
 
+  // useEffect(() => {
+  //   setSnap(form.inputFiltroFoco ? 0 : form.modalAgendamento);
+  // }, [form.modalAgendamento, form.inputFiltroFoco]);
+
   useEffect(() => {
-    setSnap(form.inputFiltroFoco ? 0 : form.modalAgendamento);
-  }, [form.modalAgendamento, form.inputFiltroFoco]);
+    if (form.modalAgendamento) {
+      setSnap(form.modalAgendamento);
+    }
+  }, [form.modalAgendamento]);
 
   return (
     <>
       <BottomSheet
         ref={sheetRef}
-        index={1}
+        index={0}
         snapPoints={snapPoints}
         enablePanDownToClose={true}
         onClose={() => {
-          dispatch(
-            updateForm(
-              "modalAgendamento",
-              form.modalAgendamento !== 0 ? form.modalAgendamento : 0
-            )
-          );
+          dispatch(updateForm("modalAgendamento", 0));
         }}
       >
         <ScrollView
@@ -99,11 +100,11 @@ const ModalAgendamento = () => {
                 colaboradores={colaboradores}
                 agendamento={agendamento}
               />
-              <PaymentPicker />
+              {/* <PaymentPicker />'  */}
               <Box hasPadding>
                 <Button
                   icon="check"
-                  background="primary"
+                  buttonColor={theme.colors.primary}
                   mode="contained"
                   block
                   disabled={form.agendamentoLoading}

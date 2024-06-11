@@ -1,14 +1,20 @@
 import React from "react";
 import { useDispatch } from "react-redux";
 import { updateForm } from "../../../store/modules/salao/actions";
-import { Box, Text, Cover, Button } from "../../../styles/";
+import { Box, Text, CustomImageBackground, Button } from "../../../styles/";
 import theme from "../../../styles/theme.json";
 
-const EspecialistasPicker = ({ colaboradores, agendamento }) => {
+export default function EspecialistasPicker({ colaboradores, agendamento }) {
   const dispatch = useDispatch();
-  const colaborador = colaboradores.filter(
-    (c) => c._id === agendamento.colaboradorId
-  )[0];
+  const colaborador = colaboradores.filter((c) => {
+    if (c._id === agendamento.colaboradorId) {
+      // console.log("colaborador", c);
+      return true;
+    }
+    return false;
+  })[0];
+
+  // console.log("filter colaborador", colaborador);
 
   return (
     <>
@@ -18,11 +24,11 @@ const EspecialistasPicker = ({ colaboradores, agendamento }) => {
         </Text>
         <Box spacing="20px 0 0" align="center" height="50px">
           <Box align="center">
-            <Cover
+            <CustomImageBackground
               width="45px"
               height="45px"
               circle
-              image={colaborador?.foto}
+              source={{ uri: colaborador?.foto }}
             />
             <Text small>{colaborador?.nome}</Text>
           </Box>
@@ -30,8 +36,7 @@ const EspecialistasPicker = ({ colaboradores, agendamento }) => {
             <Button
               uppercase={false}
               onPress={() => dispatch(updateForm("modalEspecialista", true))}
-              textColor="muted"
-              background={theme.colors.light}
+              buttonColor={theme.colors.primary}
               mode="contained"
               block
             >
@@ -42,6 +47,4 @@ const EspecialistasPicker = ({ colaboradores, agendamento }) => {
       </Box>
     </>
   );
-};
-
-export default EspecialistasPicker;
+}

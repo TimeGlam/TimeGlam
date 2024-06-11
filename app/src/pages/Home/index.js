@@ -34,7 +34,7 @@ const Home = () => {
       <FlatList
         ListHeaderComponent={Header}
         data={finalServicos}
-        // renderItem={({ item }) => <Servico key={item._id} item={item} />}
+        renderItem={({ item }) => <Servico key={item._id} item={item} />}
         keyExtractor={(item) => item._id}
       />
       <ModalAgendamento />

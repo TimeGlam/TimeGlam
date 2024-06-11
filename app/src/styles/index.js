@@ -110,7 +110,7 @@ export const Badge = styled(BadgePaper)`
 `;
 
 export const Button = styled(ButtonPaper).attrs((props) => ({
-  color: theme.colors[props.background] || props.background,
+  color: theme.colors[props.backgroundColor] || props.backgroundColor,
   width: props.block ? "100%" : "auto",
   labelStyle: {
     color: theme.colors[props.textColor || "light"],

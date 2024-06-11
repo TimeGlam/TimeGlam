@@ -1,6 +1,13 @@
 import React from "react";
 
-import { Text, Box, Button, Cover, Spacer, Touchable } from "../../styles";
+import {
+  Text,
+  Box,
+  Button,
+  CustomImageBackground,
+  Spacer,
+  Touchable,
+} from "../../styles";
 import moment from "moment";
 import util from "../../util";
 import {
@@ -18,19 +25,19 @@ const Servico = ({ item }) => {
       align="center"
       hasPadding
       height="100px"
-      background="light"
+      // background="light"
       onPress={() => {
         dispatch(resetAgendamento());
         dispatch(updateAgendamento("servicoId", item?._id));
         dispatch(filterAgenda());
       }}
     >
-      <Cover
-        image={
-          item?.arquivos
+      <CustomImageBackground
+        source={{
+          uri: item?.arquivos
             ? `${util.AWS.bucketURL}/${item?.arquivos[0]?.arquivo}`
-            : ""
-        }
+            : "",
+        }}
       />
       <Box direction="column">
         <Text bold color="dark">
@@ -49,7 +56,7 @@ const Servico = ({ item }) => {
         <Button
           icon="clock-check-outline"
           background="success"
-          textColor="light"
+          // textColor="light"
           mode="contained"
         >
           AGENDAR

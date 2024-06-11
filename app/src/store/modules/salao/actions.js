@@ -16,20 +16,27 @@ export function updateServicos(servicos) {
   return { type: types.UPDATE_SERVICOS, servicos };
 }
 
-export function updateAgendamento(key, value) {
-  return { type: types.UPDATE_AGENDAMENTO, key, value };
-}
+export const updateForm = (field, value) => ({
+  type: types.UPDATE_FORM,
+  payload: { [field]: value },
+});
 
-export function updateForm(key, value) {
-  return { type: types.UPDATE_FORM, key, value };
-}
+export const updateAgendamento = (key, value) => ({
+  type: types.UPDATE_AGENDAMENTO,
+  agendamento: { [key]: value },
+});
+
+// export function updateAgenda(agenda) {
+//   return { type: types.UPDATE_AGENDA, agenda };
+// }
+
+export const updateAgenda = (field, value) => ({
+  type: types.UPDATE_AGENDA,
+  payload: { [field]: value },
+});
 
 export function filterAgenda() {
   return { type: types.FILTER_AGENDA };
-}
-
-export function updateAgenda(agenda) {
-  return { type: types.UPDATE_AGENDA, agenda };
 }
 
 export function updateColaboradores(colaboradores) {

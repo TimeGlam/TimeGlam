@@ -7,6 +7,10 @@ import theme from "../../styles/theme.json";
 const ModalResume = ({ servicos, agendamento }) => {
   const servico = servicos.filter((s) => s._id === agendamento.servicoId)[0];
 
+  // console.log("servico", servico);
+  // console.log("agendamento", agendamento);
+  // console.log("servicos", servicos);
+  // console.log("agendamento servicoId", agendamento.servicoId);
   return (
     <Box
       justify="flex-start"
@@ -18,11 +22,11 @@ const ModalResume = ({ servicos, agendamento }) => {
         <CustomImageBackground
           width="80px"
           height="80px"
-          image={
-            servico?.arquivos
+          source={{
+            uri: servico?.arquivos
               ? `${util.AWS.bucketURL}/${servico?.arquivos[0]?.arquivo}`
-              : ""
-          }
+              : "",
+          }}
         />
         <Box direction="column">
           <Title small bold>

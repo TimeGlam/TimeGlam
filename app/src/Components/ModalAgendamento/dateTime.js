@@ -3,8 +3,21 @@ import { FlatList } from "react-native";
 import { Box, Title, Text, Touchable } from "../../styles";
 import util from "../../util";
 import theme from "../../styles/theme.json";
+import { useSelector } from "react-redux";
+import moment from "moment";
 
 const DateTime = () => {
+  
+  const { form, servicos, agendamento, agenda, colaboradores } = useSelector(
+    (state) => state.estabelecimento
+  );
+  const dataSelecionada = moment(agendamento.data).format("YYYY-MM-DD");
+  
+   const { horariosDisponiveis, colaboradoresDia } = util.selectAgendamento(
+    agenda,
+    dataSelecionada,
+    agendamento.colaboradorId
+  );
   return (
     <>
       <Text bold color="dark" hasPadding>
@@ -60,7 +73,7 @@ const DateTime = () => {
           <Text small composed>
             Duração aprox.{" "}
             <Text small underline composed>
-              {moment(servico?.duracao)
+              {moment(servicos?.duracao)
                 .format("H:mm")
                 .replace(/^(?:0:)?0?/, "")}
               mins
