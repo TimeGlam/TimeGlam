@@ -315,7 +315,7 @@ function Horarios() {
                         popup={true}
                         toolbar={false}
                         view="week"
-                        style={{ height: 600 }}
+                        style={{ height: '70vh', minHeight: '70vh' }}
                         culture="pt-br"
                         defaultView
                     />

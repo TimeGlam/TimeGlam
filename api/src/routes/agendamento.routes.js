@@ -65,6 +65,7 @@ routes.post("/dias-disponiveis", async (req, res) => {
     const servico = await Servico.findById(servicoId).select("duracao");
     let colaboradores = [];
 
+    console.log(servico);
     let agenda = [];
     let lastDay = moment(data);
 

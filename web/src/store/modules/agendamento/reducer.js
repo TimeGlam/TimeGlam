@@ -3,6 +3,7 @@ import { produce } from 'immer';
 
 const initial_state = {
     agendamentos: [],
+    agendamento: [],
 };
 
 function agendamento(state = initial_state, action) {
