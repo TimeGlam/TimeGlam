@@ -9,24 +9,24 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterAgendamento } from '../../store/modules/agendamento/actions';
-import utils from '../../utils';
 
 function Agendamentos() {
     const dispatch = useDispatch();
     const { agendamentos } = useSelector((state) => state.agendamento);
 
-    const formatEventos = agendamentos.map((agendamento) => ({
-        title: `${agendamento.servicoId.titulo} - ${agendamento.clienteId.nome} - ${agendamento.colaboradorId.nome}`,
-        start: moment(agendamento.data).toDate(),
-        end: moment(agendamento.data)
-            .add(
-                utils.hourToMinutes(
-                    moment(agendamento.servicoId.duracao).format('HH:mm')
-                ),
-                'minutes'
-            )
-            .toDate(),
-    }));
+    const formatEventos = agendamentos.map((agendamento) => {
+        // Converte a duração diretamente de string para inteiro
+        const duracaoEmMinutos = parseInt(agendamento.servicoId.duracao, 10);
+
+        return {
+            title: `${agendamento.servicoId.titulo} - ${agendamento.clienteId.nome} - ${agendamento.colaboradorId.nome}`,
+            start: moment(agendamento.data).toDate(),
+            end: moment(agendamento.data)
+                .add(duracaoEmMinutos, 'minutes')
+                .toDate(),
+        };
+    });
+
     const formatPeriodo = (periodo) => {
         let periodoFinal = {};
 
