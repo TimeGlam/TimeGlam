@@ -21,18 +21,19 @@ export const updateForm = (field, value) => ({
   payload: { [field]: value },
 });
 
-export const updateAgendamento = (key, value) => ({
+// export const updateAgendamento = (key, value) => ({
+//   type: types.UPDATE_AGENDAMENTO,
+//   agendamento: { [key]: value },
+// });
+
+export const updateAgendamento = (agendamento) => ({
   type: types.UPDATE_AGENDAMENTO,
-  agendamento: { [key]: value },
+  agendamento,
 });
 
-// export function updateAgenda(agenda) {
-//   return { type: types.UPDATE_AGENDA, agenda };
-// }
-
-export const updateAgenda = (field, value) => ({
+export const updateAgenda = (agenda) => ({
   type: types.UPDATE_AGENDA,
-  payload: { [field]: value },
+  agenda,
 });
 
 export function filterAgenda() {

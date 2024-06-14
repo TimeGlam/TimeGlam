@@ -89,8 +89,6 @@ const ModalAgendamento = () => {
             <>
               <DateTimePicker
                 servico={servico}
-                servicos={servicos}
-                agendamento={agendamento}
                 agenda={agenda}
                 dataSelecionada={dataSelecionada}
                 horaSelecionada={horaSelecionada}

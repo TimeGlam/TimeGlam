@@ -7,8 +7,11 @@ import {
   updateEstabelecimento,
   updateServicos,
   updateAgendamento,
+  updateAgenda,
+  updateColaboradores,
 } from "./actions";
 import moment from "moment";
+import util from "../../../util";
 
 export function* getEstabelecimento() {
   try {
@@ -74,6 +77,21 @@ export function* filterAgenda() {
       alert(res.message);
       return false;
     }
+
+    yield put(updateAgenda(res.agenda));
+    yield put(updateColaboradores(res.colaboradores));
+
+    const { horariosDisponiveis, data, colaboradorId } = yield call(
+      util.selectAgendamento,
+      res.agenda
+    );
+
+    yield put(
+      updateAgendamento({
+        data: moment(`${data}T${horariosDisponiveis[0][0]}`).format(),
+        colaboradorId,
+      })
+    );
 
     console.log("filter agenda", res);
   } catch (err) {

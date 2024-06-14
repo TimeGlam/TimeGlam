@@ -4,20 +4,27 @@ import { Box, Title, Text, Touchable } from "../../styles";
 import util from "../../util";
 import theme from "../../styles/theme.json";
 import { useSelector } from "react-redux";
-import moment from "moment";
+import moment from "moment/min/moment-with-locales";
+moment.locale("pt-br");
 
-const DateTime = () => {
-  
-  const { form, servicos, agendamento, agenda, colaboradores } = useSelector(
-    (state) => state.estabelecimento
-  );
-  const dataSelecionada = moment(agendamento.data).format("YYYY-MM-DD");
-  
-   const { horariosDisponiveis, colaboradoresDia } = util.selectAgendamento(
-    agenda,
-    dataSelecionada,
-    agendamento.colaboradorId
-  );
+const DateTime = ({
+  servico,
+  agenda,
+  dataSelecionada,
+  horaSelecionada,
+  horariosDisponiveis,
+}) => {
+  // const { form, servicos, agendamento, agenda, colaboradores } = useSelector(
+  //   (state) => state.estabelecimento
+  // );
+  // const dataSelecionada = moment(agendamento.data).format("YYYY-MM-DD");
+
+  // const { horariosDisponiveis, colaboradoresDia } = util.selectAgendamento(
+  //   agenda,
+  //   dataSelecionada,
+  //   agendamento.colaboradorId
+  // );
+
   return (
     <>
       <Text bold color="dark" hasPadding>
@@ -73,9 +80,9 @@ const DateTime = () => {
           <Text small composed>
             Duração aprox.{" "}
             <Text small underline composed>
-              {moment(servicos?.duracao)
+              {/* {moment(servicos?.duracao)
                 .format("H:mm")
-                .replace(/^(?:0:)?0?/, "")}
+                .replace(/^(?:0:)?0?/, "")} */}
               mins
             </Text>
           </Text>

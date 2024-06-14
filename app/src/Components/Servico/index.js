@@ -27,8 +27,9 @@ const Servico = ({ item }) => {
       height="100px"
       // background="light"
       onPress={() => {
-        dispatch(resetAgendamento());
-        dispatch(updateAgendamento("servicoId", item?._id));
+        // dispatch(resetAgendamento());
+        // dispatch(updateAgendamento("servicoId", item?._id));
+        dispatch(updateAgendamento({ servicoId: item?._id }));
         dispatch(filterAgenda());
       }}
     >
