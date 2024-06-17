@@ -8,13 +8,10 @@ export default function EspecialistasPicker({ colaboradores, agendamento }) {
   const dispatch = useDispatch();
   const colaborador = colaboradores.filter((c) => {
     if (c._id === agendamento.colaboradorId) {
-      // console.log("colaborador", c);
       return true;
     }
     return false;
-  })[0];
-
-  // console.log("filter colaborador", colaborador);
+  })?.[0];
 
   return (
     <>

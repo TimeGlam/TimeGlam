@@ -1,9 +1,10 @@
 import React from "react";
 import { FlatList } from "react-native";
+import { useDispatch } from "react-redux";
+import { updateAgendamento } from "../../store/modules/salao/actions";
 import { Box, Title, Text, Touchable } from "../../styles";
 import util from "../../util";
 import theme from "../../styles/theme.json";
-import { useSelector } from "react-redux";
 import moment from "moment/min/moment-with-locales";
 moment.locale("pt-br");
 
@@ -14,16 +15,39 @@ const DateTime = ({
   horaSelecionada,
   horariosDisponiveis,
 }) => {
-  // const { form, servicos, agendamento, agenda, colaboradores } = useSelector(
-  //   (state) => state.estabelecimento
-  // );
-  // const dataSelecionada = moment(agendamento.data).format("YYYY-MM-DD");
+  const dispatch = useDispatch();
 
-  // const { horariosDisponiveis, colaboradoresDia } = util.selectAgendamento(
-  //   agenda,
-  //   dataSelecionada,
-  //   agendamento.colaboradorId
-  // );
+  const setAgendamentoData = (value, isTime = false) => {
+    const { horariosDisponiveis } = util.selectAgendamento(
+      agenda,
+      isTime ? dataSelecionada : value
+    );
+
+    let data = !isTime
+      ? `${value}T${horariosDisponiveis[0][0]}`
+      : `${dataSelecionada}T${value}`;
+    dispatch(updateAgendamento({ data }));
+  };
+
+  function formatDuration(duration) {
+    const minutes = parseInt(duration, 10);
+
+    if (isNaN(minutes)) {
+      return "Invalid duration";
+    }
+
+    if (minutes < 60) {
+      return `${minutes} minutos`;
+    } else {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      if (remainingMinutes === 0) {
+        return `${hours} horas`;
+      } else {
+        return `${hours} horas e ${remainingMinutes} minutos`;
+      }
+    }
+  }
 
   return (
     <>
@@ -80,10 +104,7 @@ const DateTime = ({
           <Text small composed>
             Duração aprox.{" "}
             <Text small underline composed>
-              {/* {moment(servicos?.duracao)
-                .format("H:mm")
-                .replace(/^(?:0:)?0?/, "")} */}
-              mins
+              {formatDuration(servico?.duracao)}
             </Text>
           </Text>
         </Text>

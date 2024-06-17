@@ -59,7 +59,7 @@ const ModalAgendamento = () => {
     <>
       <BottomSheet
         ref={sheetRef}
-        index={0}
+        index={-1}
         snapPoints={snapPoints}
         enablePanDownToClose={true}
         onClose={() => {
@@ -114,6 +114,23 @@ const ModalAgendamento = () => {
                 </Button>
               </Box>
             </>
+          )}
+          {agenda.length === 0 && (
+            <Box
+              background="light"
+              direction="column"
+              justify="center"
+              align="center"
+              height={Dimensions.get("window").height - 200}
+              hasPadding
+            >
+              <ActivityIndicator size="large" color={theme.colors.primary} />
+              <Spacer />
+              <Title align="center">Só um instante...</Title>
+              <Text align="center" small>
+                Estamos buscando o melhor horário pra você...
+              </Text>
+            </Box>
           )}
         </ScrollView>
         <EspecialistasModal

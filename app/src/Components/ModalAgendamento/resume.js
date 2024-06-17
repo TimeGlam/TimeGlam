@@ -7,10 +7,6 @@ import theme from "../../styles/theme.json";
 const ModalResume = ({ servicos, agendamento }) => {
   const servico = servicos.filter((s) => s._id === agendamento.servicoId)[0];
 
-  // console.log("servico", servico);
-  // console.log("agendamento", agendamento);
-  // console.log("servicos", servicos);
-  // console.log("agendamento servicoId", agendamento.servicoId);
   return (
     <Box
       justify="flex-start"

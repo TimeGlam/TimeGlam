@@ -9,9 +9,11 @@ import {
   updateAgendamento,
   updateAgenda,
   updateColaboradores,
+  updateForm,
 } from "./actions";
 import moment from "moment";
 import util from "../../../util";
+import { Alert } from "react-native";
 
 export function* getEstabelecimento() {
   try {
@@ -99,8 +101,30 @@ export function* filterAgenda() {
   }
 }
 
+export function* saveAgendamento() {
+  try {
+    yield put(updateForm("agendamentoLoading", true));
+
+    const { agendamento } = yield select((state) => state.estabelecimento);
+    const { data: res } = yield call(api.post, `/agendamento`, agendamento);
+    if (res.error) {
+      alert(res.message);
+      return false;
+    }
+
+    Alert.alert("Horário agendado com sucesso", [
+      { text: "Voltar", onPress: () => {} },
+    ]);
+
+    yield put(updateForm("agendamentoLoading", false));
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
 export default all([
   takeLatest(types.GET_ESTABELECIMENTO, getEstabelecimento),
   takeLatest(types.ALL_SERVICOS, allServicos),
   takeLatest(types.FILTER_AGENDA, filterAgenda),
+  takeLatest(types.SAVE_AGENDAMENTO, saveAgendamento),
 ]);

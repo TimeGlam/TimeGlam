@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Dimensions,
   Image,
+  Pressable,
 } from "react-native";
 import { useDispatch } from "react-redux";
 import {
@@ -56,6 +57,11 @@ const EspecialistasModal = ({
           <View
             style={{ padding: 20, borderRadius: 7, backgroundColor: "#fff" }}
           >
+            <Pressable
+              onPress={() => dispatch(updateForm("modalEspecialista", false))}
+            >
+              <Text>Hide Modal</Text>
+            </Pressable>
             <Text style={{ fontWeight: "bold", marginBottom: 10 }}>
               {servico?.titulo}
             </Text>
@@ -88,8 +94,11 @@ const EspecialistasModal = ({
                         : "transparent",
                   }}
                   onPress={() => {
+                    // dispatch(
+                    //   updateAgendamento("colaboradorId", colaborador._id)
+                    // );
                     dispatch(
-                      updateAgendamento("colaboradorId", colaborador._id)
+                      updateAgendamento({ colaboradorId: colaborador._id })
                     );
                     dispatch(updateForm("modalEspecialista", false));
                   }}

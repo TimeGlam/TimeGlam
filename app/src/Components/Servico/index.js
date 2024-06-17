@@ -20,6 +20,26 @@ import { useDispatch } from "react-redux";
 const Servico = ({ item }) => {
   const dispatch = useDispatch();
 
+  function formatDuration(duration) {
+    const minutes = parseInt(duration, 10);
+
+    if (isNaN(minutes)) {
+      return "Invalid duration";
+    }
+
+    if (minutes < 60) {
+      return `${minutes} minutos`;
+    } else {
+      const hours = Math.floor(minutes / 60);
+      const remainingMinutes = minutes % 60;
+      if (remainingMinutes === 0) {
+        return `${hours} horas`;
+      } else {
+        return `${hours} horas e ${remainingMinutes} minutos`;
+      }
+    }
+  }
+
   return (
     <Touchable
       align="center"
@@ -28,7 +48,6 @@ const Servico = ({ item }) => {
       // background="light"
       onPress={() => {
         // dispatch(resetAgendamento());
-        // dispatch(updateAgendamento("servicoId", item?._id));
         dispatch(updateAgendamento({ servicoId: item?._id }));
         dispatch(filterAgenda());
       }}
@@ -46,11 +65,7 @@ const Servico = ({ item }) => {
         </Text>
         <Spacer />
         <Text small>
-          R$ {item?.preco} •{" "}
-          {moment(item?.duracao)
-            .format("H:mm")
-            .replace(/^(?:0:)?0?/, "")}{" "}
-          mins
+          R$ {item?.preco} • {formatDuration(item?.duracao)}
         </Text>
       </Box>
       <Box direction="column" align="flex-end">
