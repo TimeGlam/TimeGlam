@@ -1,22 +1,22 @@
-import express from "express";
-import mongoose from "mongoose";
-import moment from "moment";
-import _ from "lodash";
-import Colaborador from "../models/Colaborador";
-import Servico from "../models/Servico";
-import Horario from "../models/Horario";
-import Agendamento from "../models/Agendamento";
-import util from "../util";
+import express from 'express';
+import mongoose from 'mongoose';
+import moment from 'moment';
+import _ from 'lodash';
+import Colaborador from '../models/Colaborador';
+import Servico from '../models/Servico';
+import Horario from '../models/Horario';
+import Agendamento from '../models/Agendamento';
+import util from '../util';
 
 const routes = express.Router();
 
-routes.post("/", async (req, res) => {
+routes.post('/', async (req, res) => {
   const session = await mongoose.startSession();
   session.startTransaction();
   try {
     const { servicoId } = req.body;
 
-    const servico = await Servico.findById(servicoId).select("preco comissao");
+    const servico = await Servico.findById(servicoId).select('preco comissao');
 
     let agendamento = req.body;
     agendamento = {
@@ -36,20 +36,20 @@ routes.post("/", async (req, res) => {
   }
 });
 
-routes.post("/filter", async (req, res) => {
+routes.post('/filter', async (req, res) => {
   try {
     const { range, estabelecimentoId } = req.body;
 
     const agendamentos = await Agendamento.find({
       estabelecimentoId,
       data: {
-        $gte: moment(range.start).startOf("day"),
-        $lte: moment(range.end).endOf("day"),
+        $gte: moment(range.start).startOf('day'),
+        $lte: moment(range.end).endOf('day'),
       },
     }).populate([
-      { path: "servicoId", select: "titulo duracao" },
-      { path: "colaboradorId", select: "nome" },
-      { path: "clienteId", select: "nome" },
+      { path: 'servicoId', select: 'titulo duracao' },
+      { path: 'colaboradorId', select: 'nome' },
+      { path: 'clienteId', select: 'nome' },
     ]);
 
     res.json({ error: false, agendamentos });
@@ -58,11 +58,11 @@ routes.post("/filter", async (req, res) => {
   }
 });
 
-routes.post("/dias-disponiveis", async (req, res) => {
+routes.post('/dias-disponiveis', async (req, res) => {
   try {
     const { data, estabelecimentoId, servicoId } = req.body;
     const horarios = await Horario.find({ estabelecimentoId });
-    const servico = await Servico.findById(servicoId).select("duracao");
+    const servico = await Servico.findById(servicoId).select('duracao');
     let colaboradores = [];
 
     let agenda = [];
@@ -70,13 +70,13 @@ routes.post("/dias-disponiveis", async (req, res) => {
 
     // DURAÇÃO DO SERVIÇO
     const servicoDuracao = util.hourToMinutes(
-      moment(servico.duracao).format("HH:mm")
+      moment(servico.duracao).format('HH:mm'),
     );
 
     const servicoDuracaoSlots = util.sliceMinutes(
       servico.duracao,
-      moment(servico.duracao).add(servicoDuracao, "minutes"),
-      util.SLOT_DURATION
+      moment(servico.duracao).add(servicoDuracao, 'minutes'),
+      util.SLOT_DURATION,
     ).length;
 
     for (let i = 0; i <= 365 && agenda.length <= 7; i++) {
@@ -84,7 +84,7 @@ routes.post("/dias-disponiveis", async (req, res) => {
         // VERIFICAR DIA DA SEMANA
 
         const diaSemanaDisponivel = horario.dias.includes(
-          moment(lastDay).day()
+          moment(lastDay).day(),
         );
 
         // VERIFICAR ESPECIALIDADE DISPONÍVEL
@@ -106,7 +106,7 @@ routes.post("/dias-disponiveis", async (req, res) => {
               ...util.sliceMinutes(
                 util.mergeDateTime(lastDay, espaco.inicio),
                 util.mergeDateTime(lastDay, espaco.fim),
-                util.SLOT_DURATION
+                util.SLOT_DURATION,
               ),
             ];
           }
@@ -116,18 +116,18 @@ routes.post("/dias-disponiveis", async (req, res) => {
           const agendamentos = await Agendamento.find({
             colaboradorId: colaboradorId,
             data: {
-              $gte: moment(lastDay).startOf("day"),
-              $lte: moment(lastDay).endOf("day"),
+              $gte: moment(lastDay).startOf('day'),
+              $lte: moment(lastDay).endOf('day'),
             },
           })
-            .select("data servicoId -_id")
-            .populate("servicoId", "duracao");
+            .select('data servicoId -_id')
+            .populate('servicoId', 'duracao');
 
           let horariosOcupado = agendamentos.map((a) => ({
             inicio: moment(a.data),
             fim: moment(a.data).add(
-              util.hourToMinutes(moment(a.servicoId.duracao).format("HH:mm")),
-              "minutes"
+              util.hourToMinutes(moment(a.servicoId.duracao).format('HH:mm')),
+              'minutes',
             ),
           }));
           horariosOcupado = horariosOcupado
@@ -139,22 +139,22 @@ routes.post("/dias-disponiveis", async (req, res) => {
             .splitByValue(
               todosHorariosDia[colaboradorId].map((horariosLivre) => {
                 return horariosOcupado.includes(horariosLivre)
-                  ? "-"
+                  ? '-'
                   : horariosLivre;
               }),
-              "-"
+              '-',
             )
             .filter((space) => space.length > 0);
 
           horariosLivres = horariosLivres.filter(
-            (h) => h.length >= servicoDuracaoSlots
+            (h) => h.length >= servicoDuracaoSlots,
           );
 
           horariosLivres = horariosLivres
             .map((slot) =>
               slot.filter(
-                (horario, index) => slot.length - index >= servicoDuracaoSlots
-              )
+                (horario, index) => slot.length - index >= servicoDuracaoSlots,
+              ),
             )
             .flat();
 
@@ -171,22 +171,22 @@ routes.post("/dias-disponiveis", async (req, res) => {
         if (totalColaboradores > 0) {
           colaboradores.push(Object.keys(todosHorariosDia));
           agenda.push({
-            [lastDay.format("YYYY-MM-DD")]: todosHorariosDia,
+            [lastDay.format('YYYY-MM-DD')]: todosHorariosDia,
           });
         }
       }
-      lastDay = lastDay.add(1, "day");
+      lastDay = lastDay.add(1, 'day');
     }
 
     colaboradores = _.uniq(colaboradores.flat());
 
     colaboradores = await Colaborador.find({
       _id: { $in: colaboradores },
-    }).select("nome foto");
+    }).select('nome foto');
 
     colaboradores = colaboradores.map((c) => ({
       ...c._doc,
-      nome: c.nome.split(" ")[0],
+      nome: c.nome.split(' ')[0],
     }));
 
     res.json({

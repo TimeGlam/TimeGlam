@@ -36,8 +36,8 @@ routes.get("/servicos/:estabelecimentoId", async (req, res) => {
 routes.get("/:id", async (req, res) => {
   try {
     const estabelecimento = await Estabelecimento.findById(
-      req.params.id
-    ).select("capa nome endereco.cidade geo.coordinates telefone");
+      req.params.id,
+    ).select('capa nome endereco.cidade geo.coordinates telefone');
 
     const distanceLocation = Turf.distance(
       Turf.point(estabelecimento.geo.coordinates),
