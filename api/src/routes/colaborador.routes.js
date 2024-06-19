@@ -122,6 +122,7 @@ routes.delete("/vinculo/:id", async (req, res) => {
     res.json({ erro: true, message: err.message });
   }
 });
+
 routes.post("/filter", async (req, res) => {
   try {
     const { filters } = req.body;

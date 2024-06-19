@@ -1,4 +1,63 @@
 {
-  "name": "app",
-  "displayName": "app"
+  "expo": {
+    "name": "app",
+    "slug": "app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "fonts": {
+        "custom": [
+          {
+            "fontFamily": "Ubuntu-Bold",
+            "asset": "./src/assets/fonts/Ubuntu-Bold.ttf"
+          },
+          {
+            "fontFamily": "Ubuntu-BoldItalic",
+            "asset": "./src/assets/fonts/Ubuntu-BoldItalic.ttf"
+          },
+          {
+            "fontFamily": "Ubuntu-Italic",
+            "asset": "./src/assets/fonts/Ubuntu-Italic.ttf"
+          },
+          {
+            "fontFamily": "Ubuntu-Light",
+            "asset": "./src/assets/fonts/Ubuntu-Light.ttf"
+          },
+          {
+            "fontFamily": "Ubuntu-LightItalic",
+            "asset": "./src/assets/fonts/Ubuntu-LightItalic.ttf"
+          },
+          {
+            "fontFamily": "Ubuntu-Medium",
+            "asset": "./src/assets/fonts/Ubuntu-Medium.ttf"
+          },
+          {
+            "fontFamily": "Ubuntu-MediumItalic",
+            "asset": "./src/assets/fonts/Ubuntu-MediumItalic.ttf"
+          },
+          {
+            "fontFamily": "Ubuntu-Regular",
+            "asset": "./src/assets/fonts/Ubuntu-Regular.ttf"
+          }
+        ]
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
 }

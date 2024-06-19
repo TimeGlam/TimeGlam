@@ -1,0 +1,10 @@
+  {
+    "colors": {
+      "primary": "#0d1e29",
+      "light": "#ffff",
+      "success": "#123144",
+      "danger": "#CA0505",
+      "dark": "#0d1e29",
+      "muted": "#BECDD7"
+    }
+  }
