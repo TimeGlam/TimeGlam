@@ -4,7 +4,6 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Estabelecimento from "../models/Estabelecimento";
 import Servico from "../models/Servico";
-import authMiddleware from "../middlewares/authmiddleware";
 
 const routes = express.Router();
 const { JWT_SECRET } = process.env;
