@@ -1,12 +1,12 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import Colaborador from '../models/Colaborador';
-import EstabelecimentoColaborador from '../models/relacionamentos/EstabelecimentoColaborador';
-import ColaboradorServico from '../models/relacionamentos/ColaboradorServico';
+import express from "express";
+import mongoose from "mongoose";
+import Colaborador from "../models/Colaborador";
+import EstabelecimentoColaborador from "../models/relacionamentos/EstabelecimentoColaborador";
+import ColaboradorServico from "../models/relacionamentos/ColaboradorServico";
 
 const routes = express.Router();
 
-routes.post('/', async (req, res) => {
+routes.post("/", async (req, res) => {
   // const db = mongoose.connect;
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -36,7 +36,7 @@ routes.post('/', async (req, res) => {
     const exitentRelationship = await EstabelecimentoColaborador.findOne({
       estabelecimentoId,
       colaboradorId,
-      status: { $ne: 'E' },
+      status: { $ne: "E" },
     });
 
     // SE NAO ESTA VINCULADO
@@ -55,25 +55,25 @@ routes.post('/', async (req, res) => {
           colaboradorId,
         },
         { status: colaborador.vinculo },
-        { session },
+        { session }
       );
     }
     // RELACAO COM AS ESPECIALIDADES
     await ColaboradorServico.insertMany(
-      colaborador.especialidade.map(
+      colaborador.especialidades.map(
         (servicoId) => ({
           servicoId,
           colaboradorId,
         }),
-        { session },
-      ),
+        { session }
+      )
     );
 
     await session.commitTransaction();
     session.endSession();
 
     if (existentColaborador && exitentRelationship) {
-      res.json({ erro: true, message: 'Colaborador já cadastrado.' });
+      res.json({ erro: true, message: "Colaborador já cadastrado." });
     } else {
       res.json({ erro: false });
     }
@@ -84,7 +84,7 @@ routes.post('/', async (req, res) => {
   }
 });
 
-routes.put('/:colaboradorId', async (req, res) => {
+routes.put("/:colaboradorId", async (req, res) => {
   try {
     const { vinculo, vinculoId, especialidade } = req.body;
     const { colaboradorId } = req.params;
@@ -103,7 +103,7 @@ routes.put('/:colaboradorId', async (req, res) => {
       especialidade.map((servicoId) => ({
         servicoId,
         colaboradorId,
-      })),
+      }))
     );
 
     res.json({ erro: false });
@@ -112,27 +112,43 @@ routes.put('/:colaboradorId', async (req, res) => {
   }
 });
 
-routes.delete('/vinculo/:id', async (req, res) => {
+routes.delete("/vinculo/:id", async (req, res) => {
   try {
     await EstabelecimentoColaborador.findByIdAndUpdate(req.params.id, {
-      status: 'E',
+      status: "E",
     });
     res.json({ erro: false });
   } catch (err) {
     res.json({ erro: true, message: err.message });
   }
 });
-
-routes.post('/filter', async (req, res) => {
+routes.post("/filter", async (req, res) => {
   try {
-    const colaboradores = await Colaborador.find(req.body.filters);
-    res.json({ erro: false, colaboradores });
+    const { filters } = req.body;
+    const colaboradores = await Colaborador.find(filters);
+
+    const listaColaboradores = await Promise.all(
+      colaboradores.map(async (colaborador) => {
+        const especialidades = await ColaboradorServico.find({
+          colaboradorId: colaborador._id,
+        });
+
+        return {
+          ...colaborador._doc,
+          especialidades: especialidades.map(
+            (especialidade) => especialidade.servicoId
+          ),
+        };
+      })
+    );
+
+    res.json({ erro: false, colaboradores: listaColaboradores });
   } catch (err) {
     res.json({ erro: true, message: err.message });
   }
 });
 
-routes.get('/estabelecimento/:estabelecimentoId', async (req, res) => {
+routes.get("/estabelecimento/:estabelecimentoId", async (req, res) => {
   try {
     const { estabelecimentoId } = req.params;
     const listaColaboradores = [];
@@ -140,10 +156,10 @@ routes.get('/estabelecimento/:estabelecimentoId', async (req, res) => {
     // RECUPERAR VINCULOS
     const estabelecimentoColaboradores = await EstabelecimentoColaborador.find({
       estabelecimentoId,
-      status: { $ne: 'E' },
+      status: { $ne: "E" },
     })
-      .populate([{ path: 'colaboradorId', select: '-senha -ContaBancaria' }])
-      .select('colaboradorId dataCadastro status');
+      .populate([{ path: "colaboradorId", select: "-senha -ContaBancaria" }])
+      .select("colaboradorId dataCadastro status");
 
     for (const vinculo of estabelecimentoColaboradores) {
       const especialidades = await ColaboradorServico.find({
@@ -152,7 +168,9 @@ routes.get('/estabelecimento/:estabelecimentoId', async (req, res) => {
 
       listaColaboradores.push({
         ...vinculo._doc,
-        especialidades,
+        especialidades: especialidades.map(
+          (especialidade) => especialidade.servicoId
+        ),
       });
     }
 

@@ -1,23 +1,23 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
 const EstabelecimentoClienteSchema = new Schema({
   estabelecimentoId: {
     type: mongoose.Types.ObjectId,
-    ref: 'Estabelecimento',
+    ref: "Estabelecimento",
     required: true,
   },
   clienteId: {
     type: mongoose.Types.ObjectId,
-    ref: 'Cliente',
+    ref: "Cliente",
     required: true,
   },
   status: {
     type: String,
-    enum: ['A', 'I'],
+    enum: ["A", "I", "E"],
     required: true,
-    default: 'A',
+    default: "A",
   },
   dataCadastro: {
     type: Date,
@@ -26,7 +26,7 @@ const EstabelecimentoClienteSchema = new Schema({
 });
 
 const EstabelecimentoCliente = mongoose.model(
-  'EstabelecimentoCliente',
-  EstabelecimentoClienteSchema,
+  "EstabelecimentoCliente",
+  EstabelecimentoClienteSchema
 );
 export default EstabelecimentoCliente;
