@@ -8,7 +8,6 @@ import ModalHeader from "./header";
 import DateTimePicker from "./dateTime";
 import EspecialistasPicker from "./especialistas";
 import EspecialistasModal from "./especialistas/modal";
-import PaymentPicker from "./especialistas/payment";
 
 import { useSelector, useDispatch } from "react-redux";
 import { updateForm, saveAgendamento } from "../../store/modules/salao/actions";
@@ -98,7 +97,6 @@ const ModalAgendamento = () => {
                 colaboradores={colaboradores}
                 agendamento={agendamento}
               />
-              {/* <PaymentPicker />'  */}
               <Box hasPadding>
                 <Button
                   icon="check"

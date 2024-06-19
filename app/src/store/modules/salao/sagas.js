@@ -112,7 +112,7 @@ export function* saveAgendamento() {
       return false;
     }
 
-    Alert.alert("Horário agendado com sucesso", [
+    Alert.alert("sucesso✔️", "Horário agendado com sucesso", [
       { text: "Voltar", onPress: () => {} },
     ]);
 
