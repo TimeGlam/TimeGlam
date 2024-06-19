@@ -12,6 +12,7 @@ export function* filtrarAgendamento({ start, end }) {
                 end: end,
             },
         });
+        console.log('start end', start, end);
         if (res.error) {
             alert(res.message);
             return false;

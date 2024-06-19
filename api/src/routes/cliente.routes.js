@@ -1,11 +1,11 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import Cliente from '../models/Cliente';
-import EstabelecimentoCliente from '../models/relacionamentos/EstabelecimentoCliente';
+import express from "express";
+import mongoose from "mongoose";
+import Cliente from "../models/Cliente";
+import EstabelecimentoCliente from "../models/relacionamentos/EstabelecimentoCliente";
 
 const routes = express.Router();
 
-routes.post('/', async (req, res) => {
+routes.post("/", async (req, res) => {
   // const db = mongoose.connect;
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -25,7 +25,6 @@ routes.post('/', async (req, res) => {
         ...cliente,
       }).save({ session });
     }
-
     // RELACIONAMENTO
     const clienteId = existentCliente ? existentCliente._id : newCliente._id;
 
@@ -33,7 +32,6 @@ routes.post('/', async (req, res) => {
     const existentRelationship = await EstabelecimentoCliente.findOne({
       estabelecimentoId,
       clienteId,
-      status: { $ne: 'E' },
     });
 
     // SE NAO ESTA VINCULADO
@@ -50,8 +48,8 @@ routes.post('/', async (req, res) => {
           estabelecimentoId,
           clienteId,
         },
-        { status: 'A' },
-        { session },
+        { status: "A" },
+        { session }
       );
     }
 
@@ -59,7 +57,7 @@ routes.post('/', async (req, res) => {
     session.endSession();
 
     if (existentCliente && existentRelationship) {
-      res.json({ erro: true, message: 'Cliente já cadastrado.' });
+      res.json({ erro: true, message: "Cliente já cadastrado." });
     } else {
       res.json({ erro: false });
     }
@@ -70,7 +68,7 @@ routes.post('/', async (req, res) => {
   }
 });
 
-routes.post('/filter', async (req, res) => {
+routes.post("/filter", async (req, res) => {
   try {
     const clientes = await Cliente.find(req.body.filters);
     res.json({ erro: false, clientes });
@@ -79,17 +77,17 @@ routes.post('/filter', async (req, res) => {
   }
 });
 
-routes.get('/estabelecimento/:estabelecimentoId', async (req, res) => {
+routes.get("/estabelecimento/:estabelecimentoId", async (req, res) => {
   try {
     const { estabelecimentoId } = req.params;
 
     // RECUPERAR VINCULOS
     const clientes = await EstabelecimentoCliente.find({
       estabelecimentoId,
-      status: { $ne: 'E' },
+      status: { $ne: "E" },
     })
-      .populate('clienteId')
-      .select('clienteId dataCadastro');
+      .populate("clienteId")
+      .select("clienteId dataCadastro");
 
     res.json({
       erro: false,
@@ -104,10 +102,10 @@ routes.get('/estabelecimento/:estabelecimentoId', async (req, res) => {
   }
 });
 
-routes.delete('/vinculo/:id', async (req, res) => {
+routes.delete("/vinculo/:id", async (req, res) => {
   try {
     await EstabelecimentoCliente.findByIdAndUpdate(req.params.id, {
-      status: 'E',
+      status: "E",
     });
     res.json({ erro: false });
   } catch (err) {

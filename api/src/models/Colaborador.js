@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const { Schema } = mongoose;
 
@@ -21,7 +21,7 @@ const ColaboradorSchema = new Schema({
   },
   foto: {
     type: String,
-    required: true,
+    required: false,
   },
 
   dataNascimento: {
@@ -30,15 +30,15 @@ const ColaboradorSchema = new Schema({
   },
   genero: {
     type: String,
-    enum: ['M', 'F', 'LGBT'],
+    enum: ["M", "F", "LGBT"],
     required: true,
   },
 
   status: {
     type: String,
-    enum: ['A', 'I'],
+    enum: ["A", "I"],
     required: true,
-    default: 'A',
+    default: "A",
   },
   ContaBancaria: {
     titular: {
@@ -74,5 +74,5 @@ const ColaboradorSchema = new Schema({
   },
 });
 
-const Colaborador = mongoose.model('Colaborador', ColaboradorSchema);
+const Colaborador = mongoose.model("Colaborador", ColaboradorSchema);
 export default Colaborador;

@@ -1,6 +1,6 @@
 :root {
     --primary: #0d1e29;
-    --secondary: rgb(190, 205, 215);
+    --secondary: #becdd7;
     --alternative: rgb(8, 115, 155);
     --danger: #d62828;
     --success: #06d6a0;
@@ -99,4 +99,22 @@ sidebar ul li a span.mdi{
 sidebar ul li a text{
     font-size: 14px;
     
+}
+button.custom-primary-button {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+button.custom-primary-button:hover {
+    background-color: var( --alternative); 
+    border-color: var( --alternative);
+}
+.gradient-background {
+    background: linear-gradient(to bottom right, var(--secondary), #7cadce); /* Substitua as cores pelo degradê desejado */
+}
+.dropdown-menu {
+    position: absolute; /* Posicionamento absoluto */
+    background-color: #d4c9c9; /* Cor de fundo escura */
+    color: #fff; /* Cor do texto */
+    z-index: 9999; /* Valor alto para garantir que esteja acima de outros elementos */
 }

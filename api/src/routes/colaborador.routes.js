@@ -60,7 +60,7 @@ routes.post("/", async (req, res) => {
     }
     // RELACAO COM AS ESPECIALIDADES
     await ColaboradorServico.insertMany(
-      colaborador.especialidade.map(
+      colaborador.especialidades.map(
         (servicoId) => ({
           servicoId,
           colaboradorId,
@@ -125,8 +125,25 @@ routes.delete("/vinculo/:id", async (req, res) => {
 
 routes.post("/filter", async (req, res) => {
   try {
-    const colaboradores = await Colaborador.find(req.body.filters);
-    res.json({ erro: false, colaboradores });
+    const { filters } = req.body;
+    const colaboradores = await Colaborador.find(filters);
+
+    const listaColaboradores = await Promise.all(
+      colaboradores.map(async (colaborador) => {
+        const especialidades = await ColaboradorServico.find({
+          colaboradorId: colaborador._id,
+        });
+
+        return {
+          ...colaborador._doc,
+          especialidades: especialidades.map(
+            (especialidade) => especialidade.servicoId
+          ),
+        };
+      })
+    );
+
+    res.json({ erro: false, colaboradores: listaColaboradores });
   } catch (err) {
     res.json({ erro: true, message: err.message });
   }
@@ -152,7 +169,9 @@ routes.get("/estabelecimento/:estabelecimentoId", async (req, res) => {
 
       listaColaboradores.push({
         ...vinculo._doc,
-        especialidades,
+        especialidades: especialidades.map(
+          (especialidade) => especialidade.servicoId
+        ),
       });
     }
 
