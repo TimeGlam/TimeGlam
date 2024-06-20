@@ -44,9 +44,7 @@ const ModalAgendamento = () => {
     }
   };
 
-  // useEffect(() => {
-  //   setSnap(form.inputFiltroFoco ? 0 : form.modalAgendamento);
-  // }, [form.modalAgendamento, form.inputFiltroFoco]);
+  const handleClosePress = () => sheetRef.current.close();
 
   useEffect(() => {
     if (form.modalAgendamento) {
@@ -106,7 +104,11 @@ const ModalAgendamento = () => {
                   disabled={form.agendamentoLoading}
                   loading={form.agendamentoLoading}
                   uppercase={false}
-                  onPress={() => dispatch(saveAgendamento())}
+                  onPress={() => {
+                    dispatch(saveAgendamento());
+                    dispatch(updateForm("modalAgendamento", 0));
+                    handleClosePress();
+                  }}
                 >
                   Confirmar meu agendamento
                 </Button>

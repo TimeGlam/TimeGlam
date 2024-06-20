@@ -45,12 +45,6 @@ function estabelecimento(state = INITIAL_STATE, action) {
         });
       });
     }
-    // case types.UPDATE_AGENDA: {
-    //   return produce(state, (draft) => {
-    //     draft.agenda = [...state.agenda, ...action.agenda];
-    //   });
-    // }
-
     case types.UPDATE_AGENDA: {
       return produce(state, (draft) => {
         draft.agenda = action.agenda;
@@ -64,12 +58,17 @@ function estabelecimento(state = INITIAL_STATE, action) {
         draft.agendamento = { ...draft.agendamento, ...action.agendamento };
       });
     }
+    // case types.UPDATE_COLABORADORES: {
+    //   return produce(state, (draft) => {
+    //     draft.colaboradores = _.uniq([
+    //       ...state.colaboradores,
+    //       ...action.colaboradores,
+    //     ]);
+    //   });
+    // }
     case types.UPDATE_COLABORADORES: {
       return produce(state, (draft) => {
-        draft.colaboradores = _.uniq([
-          ...state.colaboradores,
-          ...action.colaboradores,
-        ]);
+        draft.colaboradores = action.colaboradores;
       });
     }
     default:

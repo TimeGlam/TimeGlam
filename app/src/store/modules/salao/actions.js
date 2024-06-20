@@ -21,11 +21,6 @@ export const updateForm = (field, value) => ({
   payload: { [field]: value },
 });
 
-// export const updateAgendamento = (key, value) => ({
-//   type: types.UPDATE_AGENDAMENTO,
-//   agendamento: { [key]: value },
-// });
-
 export const updateAgendamento = (agendamento) => ({
   type: types.UPDATE_AGENDAMENTO,
   agendamento,
