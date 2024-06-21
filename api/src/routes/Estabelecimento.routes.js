@@ -1,4 +1,3 @@
-
 import express from "express";
 import * as Turf from "@turf/turf";
 import bcrypt from "bcrypt";
@@ -63,6 +62,17 @@ routes.get("/servicos/:estabelecimentoId", async (req, res) => {
     });
   } catch (err) {
     res.json({ erro: true, message: err.message });
+  }
+});
+
+routes.get("/estabelecimentos", async (req, res) => {
+  try {
+    const estabelecimentos = await Estabelecimento.find().select(
+      "nome telefone email capa foto endereco.cidade geo.coordinates"
+    );
+    res.json({ error: false, estabelecimentos });
+  } catch (err) {
+    res.json({ error: true, message: err.message });
   }
 });
 
