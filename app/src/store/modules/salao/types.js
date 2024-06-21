@@ -1,4 +1,6 @@
 const types = {
+  ALL_ESTABELECIMENTOS: "@estabelecimento/ALL_ESTABELECIMENTOS",
+  UPDATE_ESTABELECIMENTOS: "@estabelecimento/UPDATE_ESTABELECIMENTOS",
   GET_ESTABELECIMENTO: "@estabelecimento/GET",
   UPDATE_ESTABELECIMENTO: "@estabelecimento/UPDATE",
   ALL_SERVICOS: "@estabelecimento/ALL_SERVICOS",

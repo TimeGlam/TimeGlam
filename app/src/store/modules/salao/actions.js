@@ -1,5 +1,13 @@
 import types from "./types";
 
+export function allEstabelecimentos() {
+  return { type: types.ALL_ESTABELECIMENTOS };
+}
+
+export function updateEstabelecimentos(estabelecimentos) {
+  return { type: types.UPDATE_ESTABELECIMENTOS, estabelecimentos };
+}
+
 export function getEstabelecimento() {
   return { type: types.GET_ESTABELECIMENTO };
 }

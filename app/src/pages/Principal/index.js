@@ -1,23 +1,41 @@
-import React from "react";
-import { View, Text, Button } from "react-native";
-import { Box, TextInput, Title } from "../../styles";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { FlatList } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { allEstabelecimentos } from "../../store/modules/salao/actions";
+import HeaderPrincipal from "../../Components/HeaderPrincipal";
+import Estabelecimento from "../../Components/Estabelecimento";
 
 const OutraPagina = ({ navigation }) => {
-  const { estabelecimento, servicos, form } = useSelector(
+  const dispatch = useDispatch();
+  const { form, estabelecimentos } = useSelector(
     (state) => state.estabelecimento
   );
 
-  console.log(estabelecimento);
+  // console.log("estabelecimentos principal:", estabelecimentos);
+
+  useEffect(() => {
+    dispatch(allEstabelecimentos());
+  }, []);
+
+  const finalEstabelecimentos =
+    form.inputFiltro.length > 0
+      ? estabelecimentos.filter((e) => {
+          const nome = e.nome.toLowerCase().trim();
+          const arrSearch = form.inputFiltro.toLowerCase().trim().split(" ");
+          return arrSearch.every((w) => nome.search(w) !== -1);
+        })
+      : estabelecimentos;
+
   return (
     <>
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Another Page</Text>
-        <Button
-          title="Go to Home"
-          onPress={() => navigation.navigate("Home")}
-        />
-      </View>
+      <FlatList
+        ListHeaderComponent={HeaderPrincipal}
+        data={finalEstabelecimentos}
+        renderItem={({ item }) => (
+          <Estabelecimento key={item._id} item={item} navigation={navigation} />
+        )}
+        keyExtractor={(item) => item._id}
+      />
     </>
   );
 };

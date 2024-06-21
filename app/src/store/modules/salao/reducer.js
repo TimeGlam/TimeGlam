@@ -5,6 +5,7 @@ import _ from "lodash";
 
 const INITIAL_STATE = {
   estabelecimento: {},
+  estabelecimentos: [],
   servicos: [],
   agenda: [],
   colaboradores: [],
@@ -25,6 +26,11 @@ const INITIAL_STATE = {
 };
 function estabelecimento(state = INITIAL_STATE, action) {
   switch (action.type) {
+    case types.UPDATE_ESTABELECIMENTOS: {
+      return produce(state, (draft) => {
+        draft.estabelecimentos = action.estabelecimentos;
+      });
+    }
     case types.UPDATE_ESTABELECIMENTO: {
       return produce(state, (draft) => {
         draft.estabelecimento = {

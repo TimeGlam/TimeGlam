@@ -10,10 +10,31 @@ import {
   updateAgenda,
   updateColaboradores,
   updateForm,
+  updateEstabelecimentos,
 } from "./actions";
 import moment from "moment";
 import util from "../../../util";
 import { Alert } from "react-native";
+
+export function* allEstabelecimentos() {
+  try {
+    const { data: res } = yield call(
+      api.get,
+      "/estabelecimento/estabelecimentos"
+    );
+
+    console.log("Dados dos estabelecimentos:", res);
+
+    if (res.error) {
+      alert(res.message);
+      return false;
+    }
+
+    yield put(updateEstabelecimentos(res.estabelecimentos));
+  } catch (err) {
+    alert(err.message, "deu erro");
+  }
+}
 
 export function* getEstabelecimento() {
   try {
@@ -29,10 +50,12 @@ export function* getEstabelecimento() {
       return false;
     }
 
+    const location = res.distanceLocation.toFixed(2);
+
     yield put(
       updateEstabelecimento({
         ...res.estabelecimento,
-        distanceLocation: res.distanceLocation,
+        distanceLocation: location,
       })
     );
   } catch (err) {
@@ -123,6 +146,7 @@ export function* saveAgendamento() {
 }
 
 export default all([
+  takeLatest(types.ALL_ESTABELECIMENTOS, allEstabelecimentos),
   takeLatest(types.GET_ESTABELECIMENTO, getEstabelecimento),
   takeLatest(types.ALL_SERVICOS, allServicos),
   takeLatest(types.FILTER_AGENDA, filterAgenda),

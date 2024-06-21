@@ -15,13 +15,14 @@ import {
   updateAgendamento,
   filterAgenda,
   resetAgendamento,
+  updateEstabelecimento,
 } from "../../store/modules/salao/actions";
 import { useDispatch } from "react-redux";
 
-const Servico = ({ item }) => {
+const Estabelecimento = ({ navigation, item }) => {
   const dispatch = useDispatch();
 
-  // console.log("item servico: ", item);
+  //   console.log("item estabelecimento: ", item);
 
   function formatDuration(duration) {
     const minutes = parseInt(duration, 10);
@@ -50,26 +51,20 @@ const Servico = ({ item }) => {
       height="100px"
       background="light"
       onPress={() => {
-        // dispatch(resetAgendamento());
-        dispatch(updateAgendamento({ servicoId: item?._id }));
-        dispatch(filterAgenda());
+        // dispatch(updateEstabelecimento({ _id: item?._id }));
+        navigation.navigate("Home");
       }}
     >
       <CustomImageBackground
         source={{
-          uri: item?.arquivos
-            ? `${util.AWS.bucketURL}/${item?.arquivos[0]?.arquivo}`
-            : "",
+          uri: item?.foto,
         }}
       />
       <Box direction="column">
         <Text bold color="dark">
-          {item?.titulo}
+          {item?.nome}
         </Text>
         <Spacer />
-        <Text small>
-          R$ {item?.preco} • {formatDuration(item?.duracao)}
-        </Text>
       </Box>
       <Box direction="column" align="flex-end">
         <Button
@@ -78,11 +73,11 @@ const Servico = ({ item }) => {
           buttonColor={theme.colors.primary}
           mode="contained"
         >
-          AGENDAR
+          VISITAR
         </Button>
       </Box>
     </Touchable>
   );
 };
 
-export default Servico;
+export default Estabelecimento;

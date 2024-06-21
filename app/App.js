@@ -14,6 +14,7 @@ import { Provider as StoreProvider } from "react-redux";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import store from "./src/store";
 import { useFonts } from "expo-font";
+import Estabelecimento from "./src/Components/Estabelecimento";
 
 // Criação do Stack Navigator para cada tela
 const HomeStack = createStackNavigator();
