@@ -10,6 +10,7 @@ import {
 } from "../../styles";
 import moment from "moment";
 import util from "../../util";
+import theme from "../../styles/theme.json";
 import {
   updateAgendamento,
   filterAgenda,
@@ -72,7 +73,7 @@ const Servico = ({ item }) => {
         <Button
           icon="clock-check-outline"
           background="success"
-          // textColor="light"
+          buttonColor={theme.colors.primary}
           mode="contained"
         >
           AGENDAR

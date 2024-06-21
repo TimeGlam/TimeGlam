@@ -94,6 +94,7 @@ const Header = () => {
             icon="clock-check-outline"
             background="success"
             mode="contained"
+            buttonColor={theme.colors.primary}
             uppercase={false}
           >
             Agendar Agora

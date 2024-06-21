@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { FlatList } from "react-native";
+import { FlatList, Button } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -11,7 +11,7 @@ import Header from "../../Components/Header/index";
 import Servico from "../../Components/Servico/index";
 import ModalAgendamento from "../../Components/ModalAgendamento";
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { servicos, form } = useSelector((state) => state.estabelecimento);
 
