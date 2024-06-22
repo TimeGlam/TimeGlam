@@ -16,6 +16,7 @@ import {
   filterAgenda,
   resetAgendamento,
   updateEstabelecimento,
+  getEstabelecimento,
 } from "../../store/modules/salao/actions";
 import { useDispatch } from "react-redux";
 
@@ -24,26 +25,6 @@ const Estabelecimento = ({ navigation, item }) => {
 
   //   console.log("item estabelecimento: ", item);
 
-  function formatDuration(duration) {
-    const minutes = parseInt(duration, 10);
-
-    if (isNaN(minutes)) {
-      return "Invalid duration";
-    }
-
-    if (minutes < 60) {
-      return `${minutes} minutos`;
-    } else {
-      const hours = Math.floor(minutes / 60);
-      const remainingMinutes = minutes % 60;
-      if (remainingMinutes === 0) {
-        return `${hours} horas`;
-      } else {
-        return `${hours} horas e ${remainingMinutes} minutos`;
-      }
-    }
-  }
-
   return (
     <Touchable
       align="center"
@@ -51,7 +32,7 @@ const Estabelecimento = ({ navigation, item }) => {
       height="100px"
       background="light"
       onPress={() => {
-        // dispatch(updateEstabelecimento({ _id: item?._id }));
+        dispatch(getEstabelecimento(item._id));
         navigation.navigate("Home");
       }}
     >

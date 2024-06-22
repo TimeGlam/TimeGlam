@@ -36,11 +36,12 @@ export function* allEstabelecimentos() {
   }
 }
 
-export function* getEstabelecimento() {
+export function* getEstabelecimento(action) {
   try {
+    const { estabelecimentoId } = action;
     const { data: res } = yield call(
       api.get,
-      `/estabelecimento/${consts.estabelecimentoId}`
+      `/estabelecimento/${estabelecimentoId}`
     );
 
     console.log("Dados do estabelecimento:", res);

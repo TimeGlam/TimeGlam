@@ -94,18 +94,18 @@ const App = () => {
               })}
             >
               <Tab.Screen
-                name="Home"
-                component={HomeStackScreen}
-                options={{
-                  tabBarLabel: "Home",
-                  headerShown: false, // Ocultar o header da aba
-                }}
-              />
-              <Tab.Screen
                 name="Principal"
                 component={PrincipalStackScreen}
                 options={{
                   tabBarLabel: "Principal",
+                  headerShown: false, // Ocultar o header da aba
+                }}
+              />
+              <Tab.Screen
+                name="Home"
+                component={HomeStackScreen}
+                options={{
+                  tabBarLabel: "Home",
                   headerShown: false, // Ocultar o header da aba
                 }}
               />

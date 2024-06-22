@@ -15,7 +15,7 @@ const OutraPagina = ({ navigation }) => {
 
   useEffect(() => {
     dispatch(allEstabelecimentos());
-  }, []);
+  }, [dispatch]);
 
   const finalEstabelecimentos =
     form.inputFiltro.length > 0

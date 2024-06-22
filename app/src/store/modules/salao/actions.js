@@ -8,8 +8,12 @@ export function updateEstabelecimentos(estabelecimentos) {
   return { type: types.UPDATE_ESTABELECIMENTOS, estabelecimentos };
 }
 
-export function getEstabelecimento() {
-  return { type: types.GET_ESTABELECIMENTO };
+// export function getEstabelecimento() {
+//   return { type: types.GET_ESTABELECIMENTO };
+// }
+
+export function getEstabelecimento(estabelecimentoId) {
+  return { type: types.GET_ESTABELECIMENTO, estabelecimentoId };
 }
 
 export function updateEstabelecimento(estabelecimento) {

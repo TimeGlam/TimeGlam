@@ -13,7 +13,7 @@ const HeaderPrincipal = () => {
     (state) => state.estabelecimento
   );
 
-  console.log("estabelecimento", estabelecimento);
+  // console.log("estabelecimento", estabelecimento);
 
   useEffect(() => {
     dispatch(allEstabelecimentos());
