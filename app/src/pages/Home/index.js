@@ -15,10 +15,10 @@ const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const { servicos, form } = useSelector((state) => state.estabelecimento);
 
-  useEffect(() => {
-    // dispatch(getEstabelecimento());
-    dispatch(allServicos());
-  }, [dispatch]);
+  // useEffect(() => {
+  //   // dispatch(getEstabelecimento());
+  //   // dispatch(allServicos());
+  // }, [dispatch]);
 
   const finalServicos =
     form.inputFiltro.length > 0

@@ -8,10 +8,6 @@ export function updateEstabelecimentos(estabelecimentos) {
   return { type: types.UPDATE_ESTABELECIMENTOS, estabelecimentos };
 }
 
-// export function getEstabelecimento() {
-//   return { type: types.GET_ESTABELECIMENTO };
-// }
-
 export function getEstabelecimento(estabelecimentoId) {
   return { type: types.GET_ESTABELECIMENTO, estabelecimentoId };
 }
@@ -20,8 +16,8 @@ export function updateEstabelecimento(estabelecimento) {
   return { type: types.UPDATE_ESTABELECIMENTO, estabelecimento };
 }
 
-export function allServicos() {
-  return { type: types.ALL_SERVICOS };
+export function allServicos(estabelecimentoId) {
+  return { type: types.ALL_SERVICOS, estabelecimentoId };
 }
 
 export function updateServicos(servicos) {

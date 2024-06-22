@@ -8,15 +8,11 @@ import {
   Spacer,
   Touchable,
 } from "../../styles";
-import moment from "moment";
-import util from "../../util";
 import theme from "../../styles/theme.json";
 import {
   updateAgendamento,
-  filterAgenda,
-  resetAgendamento,
-  updateEstabelecimento,
   getEstabelecimento,
+  allServicos,
 } from "../../store/modules/salao/actions";
 import { useDispatch } from "react-redux";
 
@@ -33,6 +29,12 @@ const Estabelecimento = ({ navigation, item }) => {
       background="light"
       onPress={() => {
         dispatch(getEstabelecimento(item._id));
+        dispatch(allServicos(item._id));
+        dispatch(
+          updateAgendamento({
+            estabelecimentoId: item._id,
+          })
+        );
         navigation.navigate("Home");
       }}
     >

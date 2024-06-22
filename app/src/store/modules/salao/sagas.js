@@ -64,11 +64,12 @@ export function* getEstabelecimento(action) {
   }
 }
 
-export function* allServicos() {
+export function* allServicos(action) {
   try {
+    const { estabelecimentoId } = action;
     const { data: res } = yield call(
       api.get,
-      `/servico/estabelecimento/${consts.estabelecimentoId}`
+      `/servico/estabelecimento/${estabelecimentoId}`
     );
 
     console.log("Dados dos serviços:", res);

@@ -94,9 +94,6 @@ const EspecialistasModal = ({
                         : "transparent",
                   }}
                   onPress={() => {
-                    // dispatch(
-                    //   updateAgendamento("colaboradorId", colaborador._id)
-                    // );
                     dispatch(
                       updateAgendamento({ colaboradorId: colaborador._id })
                     );

@@ -14,7 +14,6 @@ import theme from "../../styles/theme.json";
 import {
   updateAgendamento,
   filterAgenda,
-  resetAgendamento,
 } from "../../store/modules/salao/actions";
 import { useDispatch } from "react-redux";
 
@@ -50,7 +49,6 @@ const Servico = ({ item }) => {
       height="100px"
       background="light"
       onPress={() => {
-        // dispatch(resetAgendamento());
         dispatch(updateAgendamento({ servicoId: item?._id }));
         dispatch(filterAgenda());
       }}

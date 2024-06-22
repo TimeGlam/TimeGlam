@@ -11,7 +11,7 @@ const INITIAL_STATE = {
   colaboradores: [],
   agendamento: {
     clienteId: consts.clienteId,
-    estabelecimentoId: consts.estabelecimentoId,
+    estabelecimentoId: null,
     servicoId: null,
     colaboradorId: null,
     data: null,
@@ -64,14 +64,6 @@ function estabelecimento(state = INITIAL_STATE, action) {
         draft.agendamento = { ...draft.agendamento, ...action.agendamento };
       });
     }
-    // case types.UPDATE_COLABORADORES: {
-    //   return produce(state, (draft) => {
-    //     draft.colaboradores = _.uniq([
-    //       ...state.colaboradores,
-    //       ...action.colaboradores,
-    //     ]);
-    //   });
-    // }
     case types.UPDATE_COLABORADORES: {
       return produce(state, (draft) => {
         draft.colaboradores = action.colaboradores;

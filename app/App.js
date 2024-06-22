@@ -1,6 +1,6 @@
 import React from "react";
-import { GestureHandlerRootView } from "react-native-gesture-handler"; // Importe o GestureHandlerRootView
-import { Ionicons } from "react-native-vector-icons"; // Importe os ícones
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 import Home from "./src/pages/Home/index";
 import Principal from "./src/pages/Principal/index";
@@ -14,21 +14,9 @@ import { Provider as StoreProvider } from "react-redux";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import store from "./src/store";
 import { useFonts } from "expo-font";
-import Estabelecimento from "./src/Components/Estabelecimento";
 
 // Criação do Stack Navigator para cada tela
-const HomeStack = createStackNavigator();
 const PrincipalStack = createStackNavigator();
-
-const HomeStackScreen = () => (
-  <HomeStack.Navigator>
-    <HomeStack.Screen
-      name="HomeScreen"
-      component={Home}
-      options={{ headerShown: false }} // Ocultar o header
-    />
-  </HomeStack.Navigator>
-);
 
 const PrincipalStackScreen = () => (
   <PrincipalStack.Navigator>
@@ -37,13 +25,24 @@ const PrincipalStackScreen = () => (
       component={Principal}
       options={{ headerShown: false }} // Ocultar o header
     />
+    <PrincipalStack.Screen
+      name="Home"
+      component={Home}
+      options={{ headerShown: false }} // Ocultar o header
+    />
   </PrincipalStack.Navigator>
 );
+
 const AgendamentosStackScreen = () => (
   <PrincipalStack.Navigator>
     <PrincipalStack.Screen
       name="AgendamentosScreen"
       component={Agendamentos}
+      options={{ headerShown: false }} // Ocultar o header
+    />
+    <PrincipalStack.Screen
+      name="Home"
+      component={Home}
       options={{ headerShown: false }} // Ocultar o header
     />
   </PrincipalStack.Navigator>
@@ -78,10 +77,8 @@ const App = () => {
                 tabBarIcon: ({ focused, color, size }) => {
                   let iconName;
 
-                  if (route.name === "Home") {
+                  if (route.name === "Principal") {
                     iconName = focused ? "home" : "home-outline";
-                  } else if (route.name === "Principal") {
-                    iconName = focused ? "list" : "list-outline";
                   } else if (route.name === "Agendamentos") {
                     iconName = focused ? "list" : "list-outline";
                   }
@@ -98,15 +95,7 @@ const App = () => {
                 component={PrincipalStackScreen}
                 options={{
                   tabBarLabel: "Principal",
-                  headerShown: false, // Ocultar o header da aba
-                }}
-              />
-              <Tab.Screen
-                name="Home"
-                component={HomeStackScreen}
-                options={{
-                  tabBarLabel: "Home",
-                  headerShown: false, // Ocultar o header da aba
+                  headerShown: false,
                 }}
               />
               <Tab.Screen
@@ -114,7 +103,7 @@ const App = () => {
                 component={AgendamentosStackScreen}
                 options={{
                   tabBarLabel: "Agendamentos",
-                  headerShown: false, // Ocultar o header da aba
+                  headerShown: false,
                 }}
               />
             </Tab.Navigator>
