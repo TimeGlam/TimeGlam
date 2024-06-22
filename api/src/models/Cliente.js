@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
 
 const { Schema } = mongoose;
 
@@ -17,7 +18,7 @@ const ClienteSchema = new Schema({
   },
   senha: {
     type: String,
-    default: null,
+    required: [true, "password is required"],
   },
   foto: {
     type: String,
@@ -62,6 +63,13 @@ const ClienteSchema = new Schema({
     pais: String,
     logradouro: String,
   },
+});
+ClienteSchema.pre("save", async function (next) {
+  if (this.isModified("senha")) {
+    const salt = await bcrypt.genSalt(10);
+    this.senha = await bcrypt.hash(this.senha, salt);
+  }
+  next();
 });
 
 const Cliente = mongoose.model("Cliente", ClienteSchema);

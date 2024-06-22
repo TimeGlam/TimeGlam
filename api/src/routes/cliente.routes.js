@@ -1,9 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 import Cliente from "../models/Cliente";
 import EstabelecimentoCliente from "../models/relacionamentos/EstabelecimentoCliente";
+// import authMiddleware from "../middlewares/authmiddleware";
 
 const routes = express.Router();
+const { JWT_SECRET } = process.env;
 
 routes.post("/", async (req, res) => {
   // const db = mongoose.connect;
@@ -11,7 +15,7 @@ routes.post("/", async (req, res) => {
   session.startTransaction();
 
   try {
-    const { cliente, estabelecimentoId } = req.body;
+    const { cliente } = req.body; // estabelecimentoId removido
     let newCliente = null;
 
     // VERIFICAR SE O CLIENTE EXISTE
@@ -28,35 +32,34 @@ routes.post("/", async (req, res) => {
     // RELACIONAMENTO
     const clienteId = existentCliente ? existentCliente._id : newCliente._id;
 
-    // VERIFOCA SE JA EXISTE O RELACIONAMENTO COM O ESTABELECIMENTO
-    const existentRelationship = await EstabelecimentoCliente.findOne({
-      estabelecimentoId,
-      clienteId,
-    });
+    // // VERIFOCA SE JA EXISTE O RELACIONAMENTO COM O ESTABELECIMENTO
+    // const existentRelationship = await EstabelecimentoCliente.findOne({
+    //   estabelecimentoId,
+    //   clienteId,
+    // });
 
     // SE NAO ESTA VINCULADO
-    if (!existentRelationship) {
+    if (!newCliente) {
       await new EstabelecimentoCliente({
-        estabelecimentoId,
         clienteId,
       }).save({ session });
     }
-    // SE JA EXISTIR UM VINCULO ENTRE CLIENTE E ESTABELECIMENTO
-    if (existentCliente) {
-      await EstabelecimentoCliente.findOneAndUpdate(
-        {
-          estabelecimentoId,
-          clienteId,
-        },
-        { status: "A" },
-        { session }
-      );
-    }
+    // // SE JA EXISTIR UM VINCULO ENTRE CLIENTE E ESTABELECIMENTO
+    // if (existentCliente) {
+    //   await EstabelecimentoCliente.findOneAndUpdate(
+    //     {
+    //       estabelecimentoId,
+    //       clienteId,
+    //     },
+    //     { status: "A" },
+    //     { session }
+    //   );
+    // }
 
     await session.commitTransaction();
     session.endSession();
 
-    if (existentCliente && existentRelationship) {
+    if (existentCliente) {
       res.json({ erro: true, message: "Cliente já cadastrado." });
     } else {
       res.json({ erro: false });
@@ -101,7 +104,53 @@ routes.get("/estabelecimento/:estabelecimentoId", async (req, res) => {
     res.json({ erro: true, message: err.message });
   }
 });
+routes.post("/login", async (req, res) => {
+  const { email, senha } = req.body;
 
+  try {
+    const cliente = await Cliente.findOne({ email });
+    if (!cliente) {
+      return res
+        .status(400)
+        .json({ erro: true, message: "Email não encontrado." });
+    }
+
+    const isMatch = await bcrypt.compare(senha, cliente.senha);
+    if (!isMatch) {
+      return res.status(400).json({ erro: true, message: "Senha incorreta." });
+    }
+
+    const payload = {
+      cliente: {
+        _id: cliente._id,
+        nome: cliente.nome,
+        documento: cliente.documento,
+        endereco: cliente.endereco,
+        telefone: cliente.telefone,
+        email: cliente.email,
+        dataNascimento: cliente.dataNascimento,
+        genero: cliente.genero,
+        status: cliente.status,
+        dataCadastro: cliente.dataCadastro,
+      },
+    };
+
+    const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "30d" });
+
+    return res.json({ erro: false, token, cliente });
+  } catch (err) {
+    return res.status(500).json({ erro: true, message: err.message });
+  }
+});
+
+routes.get("/clientes", async (req, res) => {
+  try {
+    const clientes = await Cliente.find();
+    res.json({ erro: false, clientes });
+  } catch (err) {
+    res.status(500).json({ erro: true, message: err.message });
+  }
+});
 routes.delete("/vinculo/:id", async (req, res) => {
   try {
     await EstabelecimentoCliente.findByIdAndUpdate(req.params.id, {
