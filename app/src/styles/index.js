@@ -1,6 +1,8 @@
 import styled from "styled-components/native";
 import theme from "./theme.json";
 import util from "../util";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { Text as TextArea, View } from "react-native";
 import {
   TouchableOpacity,
   ImageBackground as RNImageBackground,
@@ -130,4 +132,49 @@ export const TextInput = styled(TextInputPaper).attrs({
   width: 100%;
   font-size: 15px;
   background: ${theme.colors.light};
+`;
+
+export const Container = styled(SafeAreaView)`
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding-horizontal: 50px;
+`;
+
+export const TitleText = styled(Title)`
+  font-weight: bold;
+  font-size: 30px;
+  width: 100px;
+  margin-bottom: 20px;
+  color: ${theme.colors.red};
+`;
+
+export const InputView = styled(View)`
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
+export const StyledTextInput = styled(TextInput)`
+  height: 50px;
+  padding-horizontal: 20px;
+  border-color: ${theme.colors.red};
+  border-width: 1px;
+  border-radius: 7px;
+  margin-bottom: 15px;
+`;
+
+export const ButtonView = styled(View)`
+  width: 100%;
+  margin-bottom: 20px;
+`;
+
+export const FooterText = styled(TextArea)`
+  text-align: center;
+  color: ${theme.colors.gray};
+`;
+
+export const SignupText = styled(TextArea)`
+  color: ${theme.colors.success};
+  font-weight: bold;
+  font-size: 13px;
 `;

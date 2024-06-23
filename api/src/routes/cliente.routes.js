@@ -137,7 +137,7 @@ routes.post("/login", async (req, res) => {
 
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: "30d" });
 
-    return res.json({ erro: false, token, cliente });
+    return res.json({ erro: false, token, payload });
   } catch (err) {
     return res.status(500).json({ erro: true, message: err.message });
   }

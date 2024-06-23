@@ -1,19 +1,18 @@
 import React from "react";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import { Provider as StoreProvider, useSelector } from "react-redux";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import store from "./src/store";
+import { useFonts } from "expo-font";
 
 import Home from "./src/pages/Home/index";
 import Principal from "./src/pages/Principal/index";
 import Agendamentos from "./src/pages/Agendamentos/index";
-
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createStackNavigator } from "@react-navigation/stack";
-
-import { Provider as StoreProvider } from "react-redux";
-import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
-import store from "./src/store";
-import { useFonts } from "expo-font";
+import Login from "./src/pages/Login/index";
 
 // Criação do Stack Navigator para cada tela
 const PrincipalStack = createStackNavigator();
@@ -23,12 +22,12 @@ const PrincipalStackScreen = () => (
     <PrincipalStack.Screen
       name="PrincipalScreen"
       component={Principal}
-      options={{ headerShown: false }} // Ocultar o header
+      options={{ headerShown: false }}
     />
     <PrincipalStack.Screen
       name="Home"
       component={Home}
-      options={{ headerShown: false }} // Ocultar o header
+      options={{ headerShown: false }}
     />
   </PrincipalStack.Navigator>
 );
@@ -38,18 +37,73 @@ const AgendamentosStackScreen = () => (
     <PrincipalStack.Screen
       name="AgendamentosScreen"
       component={Agendamentos}
-      options={{ headerShown: false }} // Ocultar o header
+      options={{ headerShown: false }}
     />
     <PrincipalStack.Screen
       name="Home"
       component={Home}
-      options={{ headerShown: false }} // Ocultar o header
+      options={{ headerShown: false }}
     />
   </PrincipalStack.Navigator>
 );
 
 // Criação do Bottom Tab Navigator
 const Tab = createBottomTabNavigator();
+
+const MainTabs = () => (
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      tabBarIcon: ({ focused, color, size }) => {
+        let iconName;
+
+        if (route.name === "Principal") {
+          iconName = focused ? "home" : "home-outline";
+        } else if (route.name === "Agendamentos") {
+          iconName = focused ? "list" : "list-outline";
+        }
+
+        return <Ionicons name={iconName} size={size} color={color} />;
+      },
+      tabBarActiveTintColor: "tomato",
+      tabBarInactiveTintColor: "gray",
+      tabBarStyle: [{ display: "flex" }, null],
+    })}
+  >
+    <Tab.Screen
+      name="Principal"
+      component={PrincipalStackScreen}
+      options={{
+        tabBarLabel: "Principal",
+        headerShown: false,
+      }}
+    />
+    <Tab.Screen
+      name="Agendamentos"
+      component={AgendamentosStackScreen}
+      options={{
+        tabBarLabel: "Agendamentos",
+        headerShown: false,
+      }}
+    />
+  </Tab.Navigator>
+);
+
+const AuthStack = createStackNavigator();
+
+const AuthStackScreen = () => (
+  <AuthStack.Navigator>
+    <AuthStack.Screen
+      name="Login"
+      component={Login}
+      options={{ headerShown: false }}
+    />
+    <AuthStack.Screen
+      name="Main"
+      component={MainTabs}
+      options={{ headerShown: false }}
+    />
+  </AuthStack.Navigator>
+);
 
 const App = () => {
   const [fontsLoaded] = useFonts({
@@ -72,41 +126,7 @@ const App = () => {
       <StoreProvider store={store}>
         <PaperProvider theme={DefaultTheme}>
           <NavigationContainer>
-            <Tab.Navigator
-              screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, color, size }) => {
-                  let iconName;
-
-                  if (route.name === "Principal") {
-                    iconName = focused ? "home" : "home-outline";
-                  } else if (route.name === "Agendamentos") {
-                    iconName = focused ? "list" : "list-outline";
-                  }
-
-                  return <Ionicons name={iconName} size={size} color={color} />;
-                },
-                tabBarActiveTintColor: "tomato",
-                tabBarInactiveTintColor: "gray",
-                tabBarStyle: [{ display: "flex" }, null],
-              })}
-            >
-              <Tab.Screen
-                name="Principal"
-                component={PrincipalStackScreen}
-                options={{
-                  tabBarLabel: "Principal",
-                  headerShown: false,
-                }}
-              />
-              <Tab.Screen
-                name="Agendamentos"
-                component={AgendamentosStackScreen}
-                options={{
-                  tabBarLabel: "Agendamentos",
-                  headerShown: false,
-                }}
-              />
-            </Tab.Navigator>
+            <AuthStackScreen />
           </NavigationContainer>
         </PaperProvider>
       </StoreProvider>
