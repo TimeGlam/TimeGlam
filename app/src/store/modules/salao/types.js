@@ -3,6 +3,7 @@ const types = {
   UPDATE_ESTABELECIMENTOS: "@estabelecimento/UPDATE_ESTABELECIMENTOS",
   GET_ESTABELECIMENTO: "@estabelecimento/GET",
   UPDATE_ESTABELECIMENTO: "@estabelecimento/UPDATE",
+  UPDATE_CLIENTE: "@estabelecimento/UPDATE_CLIENTE",
   ALL_SERVICOS: "@estabelecimento/ALL_SERVICOS",
   UPDATE_SERVICOS: "@estabelecimento/UPDATE_SERVICOS",
   UPDATE_AGENDAMENTO: "@estabelecimento/UPDATE_AGENDAMENTO",

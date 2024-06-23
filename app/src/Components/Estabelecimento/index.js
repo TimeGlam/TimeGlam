@@ -1,5 +1,4 @@
 import React from "react";
-
 import {
   Text,
   Box,
@@ -14,12 +13,11 @@ import {
   getEstabelecimento,
   allServicos,
 } from "../../store/modules/salao/actions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const Estabelecimento = ({ navigation, item }) => {
   const dispatch = useDispatch();
-
-  //   console.log("item estabelecimento: ", item);
+  const { cliente } = useSelector((state) => state.estabelecimento);
 
   return (
     <Touchable
@@ -33,6 +31,11 @@ const Estabelecimento = ({ navigation, item }) => {
         dispatch(
           updateAgendamento({
             estabelecimentoId: item._id,
+          })
+        );
+        dispatch(
+          updateAgendamento({
+            clienteId: cliente._id,
           })
         );
         navigation.navigate("Home");

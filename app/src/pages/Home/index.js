@@ -1,24 +1,12 @@
-import React, { useEffect } from "react";
 import { FlatList } from "react-native";
-
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getEstabelecimento,
-  allServicos,
-} from "../../store/modules/salao/actions";
+import { useSelector } from "react-redux";
 
 import Header from "../../Components/Header/index";
 import Servico from "../../Components/Servico/index";
 import ModalAgendamento from "../../Components/ModalAgendamento";
 
-const Home = ({ navigation }) => {
-  const dispatch = useDispatch();
+const Home = () => {
   const { servicos, form } = useSelector((state) => state.estabelecimento);
-
-  // useEffect(() => {
-  //   // dispatch(getEstabelecimento());
-  //   // dispatch(allServicos());
-  // }, [dispatch]);
 
   const finalServicos =
     form.inputFiltro.length > 0

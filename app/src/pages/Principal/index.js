@@ -11,8 +11,6 @@ const OutraPagina = ({ navigation }) => {
     (state) => state.estabelecimento
   );
 
-  // console.log("estabelecimentos principal:", estabelecimentos);
-
   useEffect(() => {
     dispatch(allEstabelecimentos());
   }, [dispatch]);

@@ -16,6 +16,10 @@ export function updateEstabelecimento(estabelecimento) {
   return { type: types.UPDATE_ESTABELECIMENTO, estabelecimento };
 }
 
+export function updateCliente(cliente) {
+  return { type: types.UPDATE_CLIENTE, cliente };
+}
+
 export function allServicos(estabelecimentoId) {
   return { type: types.ALL_SERVICOS, estabelecimentoId };
 }

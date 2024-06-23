@@ -1,16 +1,16 @@
 import types from "./types";
 import { produce } from "immer";
-import consts from "../../../consts";
 import _ from "lodash";
 
 const INITIAL_STATE = {
   estabelecimento: {},
+  cliente: {},
   estabelecimentos: [],
   servicos: [],
   agenda: [],
   colaboradores: [],
   agendamento: {
-    clienteId: consts.clienteId,
+    clienteId: null,
     estabelecimentoId: null,
     servicoId: null,
     colaboradorId: null,
@@ -36,6 +36,14 @@ function estabelecimento(state = INITIAL_STATE, action) {
         draft.estabelecimento = {
           ...state.estabelecimento,
           ...action.estabelecimento,
+        };
+      });
+    }
+    case types.UPDATE_CLIENTE: {
+      return produce(state, (draft) => {
+        draft.cliente = {
+          ...state.cliente,
+          ...action.cliente,
         };
       });
     }
