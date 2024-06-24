@@ -10,7 +10,6 @@ const routes = express.Router();
 const { JWT_SECRET } = process.env;
 
 routes.post("/", async (req, res) => {
-  // const db = mongoose.connect;
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -32,35 +31,66 @@ routes.post("/", async (req, res) => {
     // RELACIONAMENTO
     const clienteId = existentCliente ? existentCliente._id : newCliente._id;
 
-    // // VERIFOCA SE JA EXISTE O RELACIONAMENTO COM O ESTABELECIMENTO
-    // const existentRelationship = await EstabelecimentoCliente.findOne({
-    //   estabelecimentoId,
-    //   clienteId,
-    // });
-
-    // SE NAO ESTA VINCULADO
     if (!newCliente) {
-      await new EstabelecimentoCliente({
+      await new Cliente({
         clienteId,
       }).save({ session });
     }
-    // // SE JA EXISTIR UM VINCULO ENTRE CLIENTE E ESTABELECIMENTO
-    // if (existentCliente) {
-    //   await EstabelecimentoCliente.findOneAndUpdate(
-    //     {
-    //       estabelecimentoId,
-    //       clienteId,
-    //     },
-    //     { status: "A" },
-    //     { session }
-    //   );
-    // }
 
     await session.commitTransaction();
     session.endSession();
 
     if (existentCliente) {
       res.json({ erro: true, message: "Cliente já cadastrado." });
+    } else {
+      res.json({ erro: false });
+    }
+  } catch (err) {
+    await session.abortTransaction();
+    session.endSession();
+    res.json({ erro: true, message: err.message });
+  }
+});
+
+routes.post("/estabelecimento", async (req, res) => {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    const { clienteId, estabelecimentoId } = req.body;
+
+    // VERIFOCA SE JA EXISTE O RELACIONAMENTO COM O ESTABELECIMENTO
+    const existentRelationship = await EstabelecimentoCliente.findOne({
+      estabelecimentoId,
+      clienteId,
+      status: { $ne: "E" },
+    });
+
+    // SE NAO ESTA VINCULADO
+    if (!existentRelationship) {
+      await new EstabelecimentoCliente({
+        estabelecimentoId,
+        clienteId,
+      }).save({ session });
+    }
+
+    // SE JA EXISTIR UM VINCULO ENTRE CLIENTE E ESTABELECIMENTO
+    if (existentRelationship) {
+      await EstabelecimentoCliente.findOneAndUpdate(
+        {
+          estabelecimentoId,
+          clienteId,
+        },
+        { status: "A" },
+        { session }
+      );
+    }
+
+    await session.commitTransaction();
+    session.endSession();
+
+    if (existentRelationship) {
+      res.json({ erro: true, message: "Já é cliente do estabelecimento" });
     } else {
       res.json({ erro: false });
     }
@@ -104,6 +134,7 @@ routes.get("/estabelecimento/:estabelecimentoId", async (req, res) => {
     res.json({ erro: true, message: err.message });
   }
 });
+
 routes.post("/login", async (req, res) => {
   const { email, senha } = req.body;
 
