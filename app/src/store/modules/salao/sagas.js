@@ -1,5 +1,4 @@
 import { takeLatest, all, call, put, select } from "redux-saga/effects";
-import consts from "../../../consts";
 import api from "../../../Services/api";
 import types from "./types";
 
@@ -133,12 +132,28 @@ export function* saveAgendamento() {
 
     const { agendamento } = yield select((state) => state.estabelecimento);
     const { data: res } = yield call(api.post, `/agendamento`, agendamento);
+
     if (res.error) {
       alert(res.message);
       return false;
     }
 
-    Alert.alert("sucesso✔️", "Horário agendado com sucesso", [
+    const clienteEstabelecimentoPayload = {
+      estabelecimentoId: agendamento.estabelecimentoId,
+      clienteId: agendamento.clienteId,
+    };
+    const { data: res2 } = yield call(
+      api.post,
+      `/cliente/estabelecimento`,
+      clienteEstabelecimentoPayload
+    );
+
+    if (res2.error) {
+      alert(res2.message);
+      return false;
+    }
+
+    Alert.alert("Sucesso ✔️", "Horário agendado com sucesso", [
       { text: "Voltar", onPress: () => {} },
     ]);
 
