@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { View, Text, Button } from "react-native";
 import { Box, TextInput, Title } from "../../styles";
 import { useDispatch, useSelector } from "react-redux";
+const moment = require("moment");
 import {
   allEstabelecimentos,
   updateForm,
@@ -9,11 +10,11 @@ import {
 
 const HeaderPrincipal = () => {
   const dispatch = useDispatch();
-  const { estabelecimento, form, estabelecimentos } = useSelector(
+  const { cliente, form, estabelecimentos } = useSelector(
     (state) => state.estabelecimento
   );
 
-  // console.log("estabelecimento", estabelecimento);
+  const hoje = moment().format("DD/MM/YYYY");
 
   useEffect(() => {
     dispatch(allEstabelecimentos());
@@ -21,6 +22,10 @@ const HeaderPrincipal = () => {
 
   return (
     <>
+      <Box background="light" direction="column" spacing="30px 0 0" hasPadding>
+        <Title>Seja bem vindo! {cliente.nome} </Title>
+        <Title small>Hoje é: {hoje} 📅</Title>
+      </Box>
       <Box background="light" direction="column" spacing="10px 0 0" hasPadding>
         <Title small>Estabelecimentos ({estabelecimentos.length})</Title>
         <TextInput
