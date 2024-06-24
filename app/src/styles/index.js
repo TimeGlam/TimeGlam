@@ -88,7 +88,7 @@ export const Title = styled(TitlePaper)`
 `;
 
 export const Text = styled(TextPaper).attrs({})`
-  color: ${(props) => theme.colors[props.color || "muted"]};
+  color: ${(props) => theme.colors[props.color || "primary"]};
   font-size: ${(props) => (props.small ? "13px" : "17px")};
   font-family: ${(props) => (props.bold ? "Ubuntu-Bold" : "Ubuntu-Light")};
   margin: ${(props) => props.spacing || 0};
@@ -119,6 +119,11 @@ export const Button = styled(ButtonPaper).attrs((props) => ({
     letterSpacing: 0,
   },
 }))``;
+// Novo componente adicionado para envolver o card
+export const CardContainer = styled.View`
+  width: 100%;
+  margin-bottom: 15px;
+`;
 
 export const TextInput = styled(TextInputPaper).attrs({
   mode: "outlined",
@@ -138,6 +143,7 @@ export const Container = styled(SafeAreaView)`
   flex: 1;
   align-items: center;
   justify-content: center;
+  margin-top: 50px
   padding-horizontal: 50px;
 `;
 

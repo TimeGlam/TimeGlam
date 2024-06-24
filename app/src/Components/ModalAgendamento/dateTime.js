@@ -100,7 +100,7 @@ const DateTime = ({
       />
       <Box hasPadding direction="column" height="60px">
         <Text bold color="dark">
-          Que horas?{" "}
+          Selecione o horário:{" "}
           <Text small composed>
             Duração aprox.{" "}
             <Text small underline composed>

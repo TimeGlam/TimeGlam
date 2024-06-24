@@ -8,7 +8,7 @@ import { Provider as StoreProvider, useSelector } from "react-redux";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import store from "./src/store";
 import { useFonts } from "expo-font";
-
+import theme from "./src/styles/theme.json";
 import Home from "./src/pages/Home/index";
 import Principal from "./src/pages/Principal/index";
 import Agendamentos from "./src/pages/Agendamentos/index";
@@ -59,12 +59,12 @@ const MainTabs = () => (
         if (route.name === "Principal") {
           iconName = focused ? "home" : "home-outline";
         } else if (route.name === "Agendamentos") {
-          iconName = focused ? "list" : "list-outline";
+          iconName = focused ? "calendar" : "calendar-outline";
         }
 
         return <Ionicons name={iconName} size={size} color={color} />;
       },
-      tabBarActiveTintColor: "tomato",
+      tabBarActiveTintColor: theme.colors.primary,
       tabBarInactiveTintColor: "gray",
       tabBarStyle: [{ display: "flex" }, null],
     })}

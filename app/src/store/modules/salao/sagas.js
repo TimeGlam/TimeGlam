@@ -13,6 +13,7 @@ import {
   updateEstabelecimentos,
 } from "./actions";
 import moment from "moment";
+import { fetchAgendamentosRequest } from "../loginCliente/actions";
 import util from "../../../util";
 import { Alert } from "react-native";
 
@@ -141,6 +142,8 @@ export function* saveAgendamento() {
       { text: "Voltar", onPress: () => {} },
     ]);
 
+    console.log("CLIENTEIDSADKLAS", agendamento.clienteId);
+    yield put(fetchAgendamentosRequest(agendamento.clienteId));
     yield put(updateForm("agendamentoLoading", false));
   } catch (err) {
     alert(err.message);

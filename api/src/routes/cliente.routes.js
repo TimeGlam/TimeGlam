@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Cliente from "../models/Cliente";
+import Agendamento from "../models/Agendamento";
+
 import EstabelecimentoCliente from "../models/relacionamentos/EstabelecimentoCliente";
 // import authMiddleware from "../middlewares/authmiddleware";
 
@@ -151,11 +153,46 @@ routes.get("/clientes", async (req, res) => {
     res.status(500).json({ erro: true, message: err.message });
   }
 });
+
+routes.get("/:clienteId", async (req, res) => {
+  try {
+    const { clienteId } = req.params;
+
+    const agendamentos = await Agendamento.find({ clienteId })
+      .populate({
+        path: "servicoId",
+        select: "titulo duracao",
+      })
+      .populate({
+        path: "estabelecimentoId",
+        select: "nome",
+      })
+      .populate({
+        path: "colaboradorId",
+        select: "nome",
+      })
+      .select("-__v"); // Excluir o campo '__v' do resultado
+
+    res.json({ error: false, agendamentos });
+  } catch (err) {
+    res.status(500).json({ error: true, message: err.message });
+  }
+});
+
 routes.delete("/vinculo/:id", async (req, res) => {
   try {
     await EstabelecimentoCliente.findByIdAndUpdate(req.params.id, {
       status: "E",
     });
+    res.json({ erro: false });
+  } catch (err) {
+    res.json({ erro: true, message: err.message });
+  }
+});
+
+routes.delete("/agendamento/:id", async (req, res) => {
+  try {
+    await Agendamento.findByIdAndDelete(req.params._id);
     res.json({ erro: false });
   } catch (err) {
     res.json({ erro: true, message: err.message });

@@ -1,32 +1,57 @@
-import { produce } from "immer";
+// src/store/modules/estabelecimento/auth/reducer.js
+
 import types from "./types";
 
-const initialState = {
+const INITIAL_STATE = {
   token: null,
+  cliente: null,
+  agendamentos: [],
   loading: false,
   error: null,
 };
 
-function auth(state = initialState, action) {
+function clienteReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case types.LOGIN_REQUEST:
-      return produce(state, (draft) => {
-        draft.loading = true;
-        draft.error = null;
-      });
+      return {
+        ...state,
+        loading: true,
+      };
     case types.LOGIN_SUCCESS:
-      return produce(state, (draft) => {
-        draft.loading = false;
-        draft.token = action.payload.token;
-      });
+      return {
+        ...state,
+        token: action.payload.token,
+        cliente: action.payload.cliente,
+        loading: false,
+        error: null,
+      };
     case types.LOGIN_FAILURE:
-      return produce(state, (draft) => {
-        draft.loading = false;
-        draft.error = action.payload.error;
-      });
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
+    case types.FETCH_AGENDAMENTOS_REQUEST:
+      return {
+        ...state,
+        loading: true,
+      };
+    case types.FETCH_AGENDAMENTOS_SUCCESS:
+      return {
+        ...state,
+        agendamentos: action.payload.agendamentos,
+        loading: false,
+        error: null,
+      };
+    case types.FETCH_AGENDAMENTOS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload.error,
+      };
     default:
       return state;
   }
 }
 
-export default auth;
+export default clienteReducer;

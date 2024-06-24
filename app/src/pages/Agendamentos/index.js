@@ -1,16 +1,177 @@
-import React from "react";
-import { View, Text, Button } from "react-native";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { ScrollView } from "react-native-gesture-handler";
+import moment from "moment";
+import theme from "../../styles/theme.json";
+import {
+  Container,
+  TitleText,
+  FooterText,
+  Spacer,
+  Text,
+  CardContainer,
+} from "../../styles";
+import { fetchAgendamentosRequest } from "../../store/modules/loginCliente/actions";
+import {
+  Card,
+  Avatar,
+  IconButton,
+  Modal,
+  Portal,
+  Button,
+} from "react-native-paper";
 
-export default function Agendamentos() {
-  return (
-    <>
-      <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-        <Text>Agendamentos</Text>
-        <Button
-          title="Go to Home"
-          onPress={() => navigation.navigate("Home")}
-        />
-      </View>
-    </>
+const Agendamentos = () => {
+  const dispatch = useDispatch();
+  const { cliente, agendamentos, loading, error } = useSelector(
+    (state) => state.auth
   );
-}
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedAgendamento, setSelectedAgendamento] = useState(null);
+
+  const openModal = (agendamento) => {
+    setSelectedAgendamento(agendamento);
+    setModalVisible(true);
+  };
+
+  const closeModal = () => {
+    setModalVisible(false);
+    setSelectedAgendamento(null);
+  };
+
+  const handleDeleteAgendamento = (agendamentoId) => {
+    // Implemente a lógica de exclusão aqui
+    // dispatch(deleteAgendamentoRequest(agendamentoId));
+    closeModal();
+  };
+
+  useEffect(() => {
+    if (cliente) {
+      dispatch(fetchAgendamentosRequest(cliente._id));
+    }
+  }, [dispatch, cliente]);
+
+  const formatDuration = (duracaoMinutos) => {
+    const duration = moment.duration(duracaoMinutos, "minutes");
+    const hours = duration.hours();
+    const minutes = duration.minutes();
+
+    if (hours > 0 && minutes > 0) {
+      return `${hours}h${minutes}m`;
+    } else if (hours > 0) {
+      return `${hours}h`;
+    } else {
+      return `${minutes} minutos`;
+    }
+  };
+
+  return (
+    <Container>
+      <TitleText style={{ width: "100%" }}>Meus agendamentos</TitleText>
+      <ScrollView
+        style={{ marginVertical: 30 }}
+        showsVerticalScrollIndicator={false}
+      >
+        {loading && <FooterText color="primary">Carregando...</FooterText>}
+        {error && <FooterText color="error">{error}</FooterText>}
+        {agendamentos.length > 0 ? (
+          agendamentos.map((agendamento) => (
+            <CardContainer key={agendamento._id}>
+              <Card>
+                <Card.Title
+                  style={{ width: "100%" }}
+                  title={agendamento.servicoId.titulo}
+                  subtitle={`Data: ${moment(agendamento.data).format(
+                    "DD/MM/YYYY HH:mm"
+                  )}`}
+                  right={(props) => (
+                    <IconButton
+                      {...props}
+                      icon="close-circle"
+                      iconColor={theme.colors.primary}
+                      onPress={() => openModal(agendamento)}
+                    />
+                  )}
+                  left={(props) => (
+                    <Avatar.Icon
+                      {...props}
+                      style={{ backgroundColor: theme.colors.primary }}
+                      icon="calendar"
+                    />
+                  )}
+                />
+                <Card.Content>
+                  <Spacer size="10px" />
+                  <Text>
+                    <Text bold>Colaborador:</Text>{" "}
+                    {agendamento.colaboradorId.nome}
+                  </Text>
+                  <Spacer size="8px" />
+                  <Text>
+                    <Text bold>Estabelecimento:</Text>{" "}
+                    {agendamento.estabelecimentoId.nome}
+                  </Text>
+                  <Spacer size="8px" />
+                  <Text>
+                    <Text bold>Valor:</Text> {agendamento.valor + " R$"}
+                  </Text>
+                  <Spacer size="8px" />
+                  <Text>
+                    <Text bold>Duração:</Text>{" "}
+                    {formatDuration(agendamento.servicoId.duracao)}
+                  </Text>
+                </Card.Content>
+              </Card>
+            </CardContainer>
+          ))
+        ) : (
+          <FooterText>Nenhum agendamento encontrado</FooterText>
+        )}
+      </ScrollView>
+
+      <Portal>
+        <Modal
+          visible={modalVisible}
+          onDismiss={closeModal}
+          contentContainerStyle={styles.modalContent}
+        >
+          <Text>Deseja realmente cancelar este agendamento?</Text>
+          <Spacer size="10px" />
+          <Button
+            mode="contained"
+            onPress={() => handleDeleteAgendamento(selectedAgendamento._id)}
+            buttonColor={theme.colors.danger}
+          >
+            Cancelar
+          </Button>
+          <Spacer size="10px" />
+          <Button
+            mode="outlined"
+            onPress={closeModal}
+            textColor={theme.colors.light}
+            buttonColor={theme.colors.primary}
+          >
+            Voltar
+          </Button>
+        </Modal>
+      </Portal>
+    </Container>
+  );
+};
+
+const styles = {
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    marginHorizontal: 50, // Ajuste a margem horizontal conforme necessário
+    maxWidth: 300, // Defina a largura máxima desejada
+    alignSelf: "center", // Centralize o modal na tela
+    borderRadius: 10, // Arredonda as bordas do modal
+  },
+  modal: {
+    borderRadius: 10, // Arredonda as bordas do modal
+  },
+};
+
+export default Agendamentos;
