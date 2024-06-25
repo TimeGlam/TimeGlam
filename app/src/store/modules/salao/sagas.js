@@ -39,9 +39,19 @@ export function* allEstabelecimentos() {
 export function* getEstabelecimento(action) {
   try {
     const { estabelecimentoId } = action;
+    const { userLocation } = yield select((state) => state.auth); // Obtenha a localização do usuário do estado do Redux
+
+    const { latitude, longitude } = userLocation;
+
     const { data: res } = yield call(
       api.get,
-      `/estabelecimento/${estabelecimentoId}`
+      `/estabelecimento/${estabelecimentoId}`,
+      {
+        params: {
+          userLat: latitude,
+          userLon: longitude,
+        },
+      }
     );
 
     console.log("Dados do estabelecimento:", res);

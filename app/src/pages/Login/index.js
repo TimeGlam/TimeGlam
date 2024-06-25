@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Button,
@@ -12,23 +12,32 @@ import {
 } from "../../styles";
 import theme from "../../styles/theme.json";
 import { loginRequest } from "../../store/modules/loginCliente/actions";
+import * as Location from "expo-location"; // Importar o módulo de localização do Expo
+import { storeUserLocation } from "../../store/modules/loginCliente/actions";
 
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorText, setErrorText] = useState(""); // Estado para armazenar mensagens de erro
   const dispatch = useDispatch();
-  const { loading, error, token } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (token) {
-      navigation.navigate("Main");
-    }
-  }, [token]);
+  // Utilizando useMemo para memoizar o seletor
+  const authState = useSelector((state) => state.auth);
+  const { loading, error, token, userLocation } = useMemo(
+    () => authState,
+    [authState]
+  );
 
   useEffect(() => {
     setErrorText("");
   }, [email, password]);
+
+  useEffect(() => {
+    if (token) {
+      // Após o login bem-sucedido, buscar a localização do usuário
+      getLocation();
+    }
+  }, [token]);
 
   const handleLogin = () => {
     // Validar campos de entrada
@@ -45,6 +54,31 @@ const Login = ({ navigation }) => {
     // Dispatch da ação de login
     dispatch(loginRequest(email, password));
   };
+
+  const getLocation = async () => {
+    let { status } = await Location.requestForegroundPermissionsAsync();
+    if (status !== "granted") {
+      console.log("Permission to access location was denied");
+      return;
+    }
+
+    try {
+      let location = await Location.getCurrentPositionAsync({});
+      dispatch(
+        storeUserLocation(location.coords.latitude, location.coords.longitude)
+      );
+      navigation.navigate("Main");
+    } catch (error) {
+      console.error("Erro ao obter a localização:", error);
+    }
+  };
+
+  // Exibir a localização do usuário sempre que houver mudança
+  useEffect(() => {
+    if (userLocation) {
+      console.log("Localização do usuário:", userLocation);
+    }
+  }, [userLocation]);
 
   return (
     <Container>

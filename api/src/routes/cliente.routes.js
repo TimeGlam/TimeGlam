@@ -223,7 +223,7 @@ routes.delete("/vinculo/:id", async (req, res) => {
 
 routes.delete("/agendamento/:id", async (req, res) => {
   try {
-    await Agendamento.findByIdAndDelete(req.params._id);
+    await Agendamento.findByIdAndDelete(req.params);
     res.json({ erro: false });
   } catch (err) {
     res.json({ erro: true, message: err.message });

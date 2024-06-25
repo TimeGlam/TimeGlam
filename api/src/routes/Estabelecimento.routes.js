@@ -82,14 +82,25 @@ routes.get("/:id", async (req, res) => {
       req.params.id
     ).select("capa nome endereco.cidade geo.coordinates telefone");
 
+    // Verificar se as coordenadas do usuário foram passadas como query params
+    const userLat = parseFloat(req.query.userLat);
+    const userLon = parseFloat(req.query.userLon);
+
+    if (isNaN(userLat) || isNaN(userLon)) {
+      return res
+        .status(400)
+        .json({ error: true, message: "Coordenadas inválidas" });
+    }
+
+    // Calcular a distância entre o estabelecimento e a localização do usuário
     const distanceLocation = Turf.distance(
       Turf.point(estabelecimento.geo.coordinates),
-      Turf.point([-23.660847245983103, -46.813597441037395])
+      Turf.point([userLat, userLon])
     );
+
     res.json({ error: false, estabelecimento, distanceLocation });
   } catch (err) {
     res.json({ error: true, message: err.message });
   }
 });
-
 export default routes;

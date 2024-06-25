@@ -27,6 +27,9 @@ export function* login({ payload }) {
 
       // Disparar a ação para buscar os agendamentos do cliente
       yield put(fetchAgendamentosRequest(cliente._id));
+
+      // Adicionar console.log para verificar a localização
+      console.log("Localização do usuário:", userLocation);
     }
 
     console.log("resposta login: ", res);

@@ -35,6 +35,8 @@ module.exports = {
     "function-paren-newline": "off",
     quotes: "off",
     "comma-dangle": "off",
+    "consistent-return": "off",
     "operator-linebreak": "off",
+    "no-restricted-globals": "off",
   },
 };

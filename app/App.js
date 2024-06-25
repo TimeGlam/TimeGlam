@@ -13,6 +13,7 @@ import Home from "./src/pages/Home/index";
 import Principal from "./src/pages/Principal/index";
 import Agendamentos from "./src/pages/Agendamentos/index";
 import Login from "./src/pages/Login/index";
+import CadastroUsuario from "./src/pages/CadastroUsuario/index";
 
 // Criação do Stack Navigator para cada tela
 const PrincipalStack = createStackNavigator();
@@ -95,6 +96,11 @@ const AuthStackScreen = () => (
     <AuthStack.Screen
       name="Login"
       component={Login}
+      options={{ headerShown: false }}
+    />
+    <AuthStack.Screen
+      name="Signup"
+      component={CadastroUsuario}
       options={{ headerShown: false }}
     />
     <AuthStack.Screen

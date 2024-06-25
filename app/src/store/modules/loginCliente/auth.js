@@ -8,11 +8,13 @@ const INITIAL_STATE = {
   agendamentos: [],
   loading: false,
   error: null,
+  userLocation: null, // Adicionar um novo campo para armazenar a localização do usuário
 };
 
 function clienteReducer(state = INITIAL_STATE, action) {
   switch (action.type) {
     case types.LOGIN_REQUEST:
+    case types.FETCH_AGENDAMENTOS_REQUEST:
       return {
         ...state,
         loading: true,
@@ -26,15 +28,11 @@ function clienteReducer(state = INITIAL_STATE, action) {
         error: null,
       };
     case types.LOGIN_FAILURE:
+    case types.FETCH_AGENDAMENTOS_FAILURE:
       return {
         ...state,
         loading: false,
         error: action.payload.error,
-      };
-    case types.FETCH_AGENDAMENTOS_REQUEST:
-      return {
-        ...state,
-        loading: true,
       };
     case types.FETCH_AGENDAMENTOS_SUCCESS:
       return {
@@ -43,11 +41,13 @@ function clienteReducer(state = INITIAL_STATE, action) {
         loading: false,
         error: null,
       };
-    case types.FETCH_AGENDAMENTOS_FAILURE:
+    case types.STORE_USER_LOCATION:
       return {
         ...state,
-        loading: false,
-        error: action.payload.error,
+        userLocation: {
+          latitude: action.payload.latitude,
+          longitude: action.payload.longitude,
+        },
       };
     default:
       return state;

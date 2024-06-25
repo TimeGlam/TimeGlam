@@ -8,7 +8,12 @@ export function loginRequest(email, senha) {
     payload: { email, senha },
   };
 }
-
+export function storeUserLocation(latitude, longitude) {
+  return {
+    type: types.STORE_USER_LOCATION,
+    payload: { latitude, longitude },
+  };
+}
 export function loginSuccess(token) {
   return {
     type: types.LOGIN_SUCCESS,
