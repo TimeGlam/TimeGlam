@@ -13,6 +13,7 @@ const types = {
   UPDATE_COLABORADORES: "@estabelecimento/UPDATE_COLABORADORES",
   RESET_AGENDAMENTO: "@estabelecimento/RESET_AGENDAMENTO",
   SAVE_AGENDAMENTO: "@estabelecimento/SAVE_AGENDAMENTO",
+  DELETE_AGENDAMENTO: "@estabelecimento/DELETE_AGENDAMENTO",
 };
 
 export default types;

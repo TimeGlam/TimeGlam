@@ -9,42 +9,42 @@ import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import store from "./src/store";
 import { useFonts } from "expo-font";
 import theme from "./src/styles/theme.json";
-import Home from "./src/pages/Home/index";
-import Principal from "./src/pages/Principal/index";
+import Estabelecimento from "./src/pages/Estabelecimento/index";
+import Home from "./src/pages/Home";
 import Agendamentos from "./src/pages/Agendamentos/index";
 import Login from "./src/pages/Login/index";
 
 // Criação do Stack Navigator para cada tela
-const PrincipalStack = createStackNavigator();
+const HomeStack = createStackNavigator();
 
-const PrincipalStackScreen = () => (
-  <PrincipalStack.Navigator>
-    <PrincipalStack.Screen
-      name="PrincipalScreen"
-      component={Principal}
-      options={{ headerShown: false }}
-    />
-    <PrincipalStack.Screen
-      name="Home"
+const HomeStackScreen = () => (
+  <HomeStack.Navigator>
+    <HomeStack.Screen
+      name="HomeScreen"
       component={Home}
       options={{ headerShown: false }}
     />
-  </PrincipalStack.Navigator>
+    <HomeStack.Screen
+      name="Estabelecimento"
+      component={Estabelecimento}
+      options={{ headerShown: false }}
+    />
+  </HomeStack.Navigator>
 );
 
 const AgendamentosStackScreen = () => (
-  <PrincipalStack.Navigator>
-    <PrincipalStack.Screen
+  <HomeStack.Navigator>
+    <HomeStack.Screen
       name="AgendamentosScreen"
       component={Agendamentos}
       options={{ headerShown: false }}
     />
-    <PrincipalStack.Screen
-      name="Home"
-      component={Home}
+    <HomeStack.Screen
+      name="Estabelecimento"
+      component={Estabelecimento}
       options={{ headerShown: false }}
     />
-  </PrincipalStack.Navigator>
+  </HomeStack.Navigator>
 );
 
 // Criação do Bottom Tab Navigator
@@ -56,7 +56,7 @@ const MainTabs = () => (
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
-        if (route.name === "Principal") {
+        if (route.name === "Home") {
           iconName = focused ? "home" : "home-outline";
         } else if (route.name === "Agendamentos") {
           iconName = focused ? "calendar" : "calendar-outline";
@@ -70,10 +70,10 @@ const MainTabs = () => (
     })}
   >
     <Tab.Screen
-      name="Principal"
-      component={PrincipalStackScreen}
+      name="Home"
+      component={HomeStackScreen}
       options={{
-        tabBarLabel: "Principal",
+        tabBarLabel: "Home",
         headerShown: false,
       }}
     />

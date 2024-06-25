@@ -12,6 +12,7 @@ import {
   CardContainer,
 } from "../../styles";
 import { fetchAgendamentosRequest } from "../../store/modules/loginCliente/actions";
+import { deleteAgendamento } from "../../store/modules/salao/actions";
 import {
   Card,
   Avatar,
@@ -41,8 +42,7 @@ const Agendamentos = () => {
   };
 
   const handleDeleteAgendamento = (agendamentoId) => {
-    // Implemente a lógica de exclusão aqui
-    // dispatch(deleteAgendamentoRequest(agendamentoId));
+    dispatch(deleteAgendamento(agendamentoId));
     closeModal();
   };
 
@@ -134,7 +134,14 @@ const Agendamentos = () => {
         <Modal
           visible={modalVisible}
           onDismiss={closeModal}
-          contentContainerStyle={styles.modalContent}
+          contentContainerStyle={{
+            backgroundColor: theme.colors.light,
+            padding: 20,
+            marginHorizontal: 50,
+            maxWidth: 300,
+            alignSelf: "center",
+            borderRadius: 10,
+          }}
         >
           <Text>Deseja realmente cancelar este agendamento?</Text>
           <Spacer size="10px" />
@@ -142,6 +149,7 @@ const Agendamentos = () => {
             mode="contained"
             onPress={() => handleDeleteAgendamento(selectedAgendamento._id)}
             buttonColor={theme.colors.danger}
+            style={{ borderColor: "none" }}
           >
             Cancelar
           </Button>
@@ -149,6 +157,7 @@ const Agendamentos = () => {
           <Button
             mode="outlined"
             onPress={closeModal}
+            style={{ borderColor: "none" }}
             textColor={theme.colors.light}
             buttonColor={theme.colors.primary}
           >
@@ -158,20 +167,6 @@ const Agendamentos = () => {
       </Portal>
     </Container>
   );
-};
-
-const styles = {
-  modalContent: {
-    backgroundColor: "white",
-    padding: 20,
-    marginHorizontal: 50, // Ajuste a margem horizontal conforme necessário
-    maxWidth: 300, // Defina a largura máxima desejada
-    alignSelf: "center", // Centralize o modal na tela
-    borderRadius: 10, // Arredonda as bordas do modal
-  },
-  modal: {
-    borderRadius: 10, // Arredonda as bordas do modal
-  },
 };
 
 export default Agendamentos;

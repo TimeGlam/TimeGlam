@@ -1,31 +1,43 @@
+import React, { useEffect } from "react";
 import { FlatList } from "react-native";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { allEstabelecimentos } from "../../store/modules/salao/actions";
+import HeaderHome from "../../Components/HeaderHome";
+import Estabelecimentos from "../../Components/Estabelecimentos";
 
-import Header from "../../Components/Header/index";
-import Servico from "../../Components/Servico/index";
-import ModalAgendamento from "../../Components/ModalAgendamento";
+const Home = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const { form, estabelecimentos } = useSelector(
+    (state) => state.estabelecimento
+  );
 
-const Home = () => {
-  const { servicos, form } = useSelector((state) => state.estabelecimento);
+  useEffect(() => {
+    dispatch(allEstabelecimentos());
+  }, [dispatch]);
 
-  const finalServicos =
+  const finalEstabelecimentos =
     form.inputFiltro.length > 0
-      ? servicos.filter((s) => {
-          const titulo = s.titulo.toLowerCase().trim();
+      ? estabelecimentos.filter((e) => {
+          const nome = e.nome.toLowerCase().trim();
           const arrSearch = form.inputFiltro.toLowerCase().trim().split(" ");
-          return arrSearch.every((w) => titulo.search(w) !== -1);
+          return arrSearch.every((w) => nome.search(w) !== -1);
         })
-      : servicos;
+      : estabelecimentos;
 
   return (
     <>
       <FlatList
-        ListHeaderComponent={Header}
-        data={finalServicos}
-        renderItem={({ item }) => <Servico key={item._id} item={item} />}
+        ListHeaderComponent={HeaderHome}
+        data={finalEstabelecimentos}
+        renderItem={({ item }) => (
+          <Estabelecimentos
+            key={item._id}
+            item={item}
+            navigation={navigation}
+          />
+        )}
         keyExtractor={(item) => item._id}
       />
-      <ModalAgendamento />
     </>
   );
 };

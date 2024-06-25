@@ -16,7 +16,7 @@ import { loginRequest } from "../../store/modules/loginCliente/actions";
 const Login = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [errorText, setErrorText] = useState(""); // Estado para armazenar mensagens de erro
+  const [errorText, setErrorText] = useState("");
   const dispatch = useDispatch();
   const { loading, error, token } = useSelector((state) => state.auth);
 

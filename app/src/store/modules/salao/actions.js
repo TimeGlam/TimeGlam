@@ -58,3 +58,7 @@ export function resetAgendamento() {
 export function saveAgendamento() {
   return { type: types.SAVE_AGENDAMENTO };
 }
+
+export function deleteAgendamento(agendamentoId) {
+  return { type: types.DELETE_AGENDAMENTO, agendamentoId };
+}
