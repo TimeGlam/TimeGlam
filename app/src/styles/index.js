@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 import theme from "./theme.json";
 import util from "../util";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Text as TextArea, View } from "react-native";
+import { Image, Text as TextArea, View } from "react-native";
 import {
   TouchableOpacity,
   ImageBackground as RNImageBackground,
@@ -13,6 +13,7 @@ import {
   Badge as BadgePaper,
   Button as ButtonPaper,
   TextInput as TextInputPaper,
+  IconButton,
 } from "react-native-paper";
 
 import { LinearGradient } from "expo-linear-gradient";
@@ -183,4 +184,50 @@ export const SignupText = styled(TextArea)`
   color: ${theme.colors.success};
   font-weight: bold;
   font-size: 13px;
+`;
+
+export const ModalHeader = styled(View)`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  margin-horizontal: 20px;
+`;
+
+export const ServicoTitle = styled(Title)`
+  font-weight: bold;
+  font-size: 18px;
+`;
+
+export const CloseButton = styled(IconButton)`
+  margin: 0;
+  padding: 0;
+`;
+
+export const ModalBody = styled(View)`
+  padding-horizontal: 20px;
+  padding-top: 10px;
+`;
+
+export const DisponibilidadeText = styled(Text)`
+  margin-bottom: 10px;
+  font-size: 16px;
+`;
+
+export const ColaboradorItem = styled(TouchableOpacity)`
+  flex-direction: row;
+  align-items: center;
+  padding-vertical: 10px;
+  padding-horizontal: 5px;
+  border-width: 1px;
+  border-color: #ccc;
+  border-radius: 5px;
+  margin-bottom: 10px;
+`;
+
+export const ColaboradorFoto = styled(Image)`
+  width: 50px;
+  height: 50px;
+  border-radius: 25px;
+  margin-right: 10px;
 `;

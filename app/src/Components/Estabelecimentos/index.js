@@ -15,7 +15,7 @@ import {
 } from "../../store/modules/salao/actions";
 import { useDispatch, useSelector } from "react-redux";
 
-const Estabelecimento = ({ navigation, item }) => {
+const Estabelecimentos = ({ navigation, item }) => {
   const dispatch = useDispatch();
   const { cliente } = useSelector((state) => state.estabelecimento);
 
@@ -38,7 +38,7 @@ const Estabelecimento = ({ navigation, item }) => {
             clienteId: cliente._id,
           })
         );
-        navigation.navigate("Home");
+        navigation.navigate("Estabelecimento");
       }}
     >
       <CustomImageBackground
@@ -66,4 +66,4 @@ const Estabelecimento = ({ navigation, item }) => {
   );
 };
 
-export default Estabelecimento;
+export default Estabelecimentos;

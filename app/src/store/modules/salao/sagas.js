@@ -163,13 +163,36 @@ export function* saveAgendamento() {
       return false;
     }
 
-    Alert.alert("Sucesso ✔️", "Horário agendado com sucesso", [
+    Alert.alert("Sucesso ✔️", "Horário agendado com sucesso!", [
       { text: "Voltar", onPress: () => {} },
     ]);
 
-    console.log("CLIENTEIDSADKLAS", agendamento.clienteId);
     yield put(fetchAgendamentosRequest(agendamento.clienteId));
     yield put(updateForm("agendamentoLoading", false));
+  } catch (err) {
+    alert(err.message);
+  }
+}
+
+export function* deleteAgendamento(action) {
+  try {
+    const { agendamentoId } = action;
+    const { cliente } = yield select((state) => state.estabelecimento);
+    const { data: res } = yield call(
+      api.delete,
+      `/cliente/agendamento/${agendamentoId}`
+    );
+
+    if (res.error) {
+      alert(res.message);
+      return false;
+    }
+
+    Alert.alert("Cancelado ✔️", "Agendamento cancelado com sucesso!", [
+      { text: "Voltar", onPress: () => {} },
+    ]);
+
+    yield put(fetchAgendamentosRequest(cliente._id));
   } catch (err) {
     alert(err.message);
   }
@@ -181,4 +204,5 @@ export default all([
   takeLatest(types.ALL_SERVICOS, allServicos),
   takeLatest(types.FILTER_AGENDA, filterAgenda),
   takeLatest(types.SAVE_AGENDAMENTO, saveAgendamento),
+  takeLatest(types.DELETE_AGENDAMENTO, deleteAgendamento),
 ]);
