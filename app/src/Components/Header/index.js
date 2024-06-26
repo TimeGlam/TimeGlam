@@ -38,8 +38,8 @@ const Header = () => {
           justify="flex-end"
           colors={["#21232F33", "#21232FE6"]}
         >
-          <Badge color={estabelecimento.isOpened ? "success" : "danger"}>
-            {estabelecimento.isOpened ? "ABERTO" : "FECHADO"}
+          <Badge color={estabelecimento.isOpened ? "danger" : "success2"}>
+            {estabelecimento.isOpened ? "FECHADO" : "ABERTO"}
           </Badge>
           <Title color="light">{estabelecimento.nome}</Title>
           <Text color="light">
@@ -57,7 +57,7 @@ const Header = () => {
             align="center"
             onPress={() => Linking.openURL(`tel:${estabelecimento.telefone}`)}
           >
-            <Icon name="phone" size={24} color={theme.colors.muted} />
+            <Icon name="phone" size={24} color={theme.colors.primary} />
             <Text small spacing="10px 0 0">
               Ligar
             </Text>
@@ -68,7 +68,7 @@ const Header = () => {
             style={{ width: "50px" }}
             onPress={() => openGps(estabelecimento?.geo?.coordinates)}
           >
-            <Icon name="map-marker" size={24} color={theme.colors.muted} />
+            <Icon name="map-marker" size={24} color={theme.colors.primary} />
             <Text small spacing="10px 0 0">
               Visitar
             </Text>
@@ -83,7 +83,7 @@ const Header = () => {
               })
             }
           >
-            <Icon name="share" size={24} color={theme.colors.muted} />
+            <Icon name="share" size={24} color={theme.colors.primary} />
             <Text small spacing="10px 0 0">
               Enviar
             </Text>

@@ -26,9 +26,7 @@ const HeaderHome = () => {
   return (
     <>
       <ImageBackground
-        source={{
-          uri: "https://unsplash.com/photos/WLUHO9A_xik/download?force=true&w=1920",
-        }}
+        source={require("../../assets/imgs/background_home.png")}
         style={{ width: "100%", height: 200 }}
       >
         <LinearGradient

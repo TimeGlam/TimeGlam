@@ -8,6 +8,7 @@ import {
   Touchable,
 } from "../../styles";
 import theme from "../../styles/theme.json";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import {
   updateAgendamento,
   getEstabelecimento,
@@ -41,11 +42,15 @@ const Estabelecimentos = ({ navigation, item }) => {
         navigation.navigate("Estabelecimento");
       }}
     >
-      <CustomImageBackground
-        source={{
-          uri: item?.foto,
-        }}
-      />
+      {item?.foto ? (
+        <CustomImageBackground
+          source={{
+            uri: item.foto,
+          }}
+        />
+      ) : (
+        <Icon name="image" size={40} /> // Ícone padrão quando não houver foto
+      )}
       <Box direction="column">
         <Text bold color="dark">
           {item?.nome}

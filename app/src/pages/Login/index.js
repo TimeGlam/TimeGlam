@@ -1,6 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  ImageBackground,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  View,
+} from "react-native";
+import {
   Button,
   Container,
   TitleText,
@@ -12,7 +19,7 @@ import {
 } from "../../styles";
 import theme from "../../styles/theme.json";
 import { loginRequest } from "../../store/modules/loginCliente/actions";
-import * as Location from "expo-location"; // Importar o módulo de localização do Expo
+import * as Location from "expo-location";
 import { storeUserLocation } from "../../store/modules/loginCliente/actions";
 
 const Login = ({ navigation }) => {
@@ -21,7 +28,6 @@ const Login = ({ navigation }) => {
   const [errorText, setErrorText] = useState("");
   const dispatch = useDispatch();
 
-  // Utilizando useMemo para memoizar o seletor
   const authState = useSelector((state) => state.auth);
   const { loading, error, token, userLocation } = useMemo(
     () => authState,
@@ -34,13 +40,11 @@ const Login = ({ navigation }) => {
 
   useEffect(() => {
     if (token) {
-      // Após o login bem-sucedido, buscar a localização do usuário
       getLocation();
     }
   }, [token]);
 
   const handleLogin = () => {
-    // Validar campos de entrada
     if (!email.trim()) {
       setErrorText("Por favor, digite seu email.");
       return;
@@ -51,7 +55,6 @@ const Login = ({ navigation }) => {
       return;
     }
 
-    // Dispatch da ação de login
     dispatch(loginRequest(email, password));
   };
 
@@ -68,12 +71,9 @@ const Login = ({ navigation }) => {
         storeUserLocation(location.coords.latitude, location.coords.longitude)
       );
       navigation.navigate("Main");
-    } catch (error) {
-      console.error("Erro ao obter a localização:", error);
-    }
+    } catch (error) {}
   };
 
-  // Exibir a localização do usuário sempre que houver mudança
   useEffect(() => {
     if (userLocation) {
       console.log("Localização do usuário:", userLocation);
@@ -81,45 +81,62 @@ const Login = ({ navigation }) => {
   }, [userLocation]);
 
   return (
-    <Container>
-      <TitleText>Entrar</TitleText>
-      {error && (
-        <FooterText style={{ color: theme.colors.error }}>{error}</FooterText>
-      )}
-      {errorText ? (
-        <FooterText style={{ color: theme.colors.error }}>
-          {errorText}
-        </FooterText>
-      ) : null}
-      <InputView>
-        <StyledTextInput
-          placeholder="Digite seu email"
-          autoCorrect={false}
-          autoCapitalize="none"
-          value={email}
-          onChangeText={setEmail}
-        />
-        <StyledTextInput
-          placeholder="Digite sua senha"
-          secureTextEntry
-          autoCorrect={false}
-          autoCapitalize="none"
-          value={password}
-          onChangeText={setPassword}
-        />
-      </InputView>
-      <ButtonView>
-        <Button onPress={handleLogin} buttonColor={theme.colors.primary}>
-          {loading ? "Carregando..." : "Entrar"}
-        </Button>
-      </ButtonView>
-      <FooterText>
-        Não tem conta?{" "}
-        <SignupText onPress={() => navigation.navigate("Signup")}>
-          Cadastre-se
-        </SignupText>
-      </FooterText>
-    </Container>
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      style={{ flex: 1 }}
+    >
+      <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+        <View
+          style={{ flex: 1, justifyContent: "center", alignItems: "center" }}
+        >
+          <Container style={{ width: "100%", alignItems: "center" }}>
+            <ImageBackground
+              source={require("../../assets/imgs/Logo.png")}
+              style={{
+                width: "100%",
+                height: 150,
+                marginBottom: 20,
+              }}
+              resizeMode="contain"
+            />
+
+            {errorText ? (
+              <FooterText style={{ color: theme.colors.error }}>
+                {errorText}
+              </FooterText>
+            ) : null}
+            <InputView style={{ width: "80%" }}>
+              <StyledTextInput
+                placeholder="Digite seu email"
+                autoCorrect={false}
+                autoCapitalize="none"
+                value={email}
+                onChangeText={setEmail}
+              />
+              <StyledTextInput
+                placeholder="Digite sua senha"
+                secureTextEntry
+                autoCorrect={false}
+                autoCapitalize="none"
+                value={password}
+                onChangeText={setPassword}
+              />
+            </InputView>
+            <ButtonView style={{ width: "80%" }}>
+              <Button onPress={handleLogin} buttonColor={theme.colors.primary}>
+                {loading ? "Carregando..." : "Entrar"}
+              </Button>
+            </ButtonView>
+            <FooterText>
+              Não tem conta?{" "}
+              <SignupText onPress={() => navigation.navigate("Signup")}>
+                Cadastre-se
+              </SignupText>
+            </FooterText>
+          </Container>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
