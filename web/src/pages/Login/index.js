@@ -40,7 +40,12 @@ const Login = () => {
             className="container d-flex justify-content-center align-items-center gradient-background"
             style={{ minHeight: '100vh' }}
         >
-            <img src={logo} className="logo " alt="Logo" />
+            <img
+                style={{ width: 450 }}
+                src={logo}
+                className="logo "
+                alt="Logo"
+            />
             <div className="col-md-6">
                 <Form fluid>
                     <Form.Group>

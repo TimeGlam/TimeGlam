@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
 import format from 'date-fns/format';
 import parse from 'date-fns/parse';
@@ -9,13 +9,15 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { filterAgendamento } from '../../store/modules/agendamento/actions';
+import EventoModal from './modal'; // Importe seu componente de modal
 
 function Agendamentos() {
     const dispatch = useDispatch();
     const { agendamentos } = useSelector((state) => state.agendamento);
+    const [mostrarModal, setMostrarModal] = useState(false);
+    const [eventoSelecionado, setEventoSelecionado] = useState(null);
 
     const formatEventos = agendamentos.map((agendamento) => {
-        // Converte a duração diretamente de string para inteiro
         const duracaoEmMinutos = parseInt(agendamento.servicoId.duracao, 10);
 
         return {
@@ -26,6 +28,11 @@ function Agendamentos() {
                 .toDate(),
         };
     });
+
+    const handleSelectEvento = (evento) => {
+        setEventoSelecionado(evento);
+        setMostrarModal(true);
+    };
 
     const formatPeriodo = (periodo) => {
         let periodoFinal = {};
@@ -51,8 +58,6 @@ function Agendamentos() {
                 moment().weekday(6).format('YYYY-MM-DD')
             )
         );
-        //    start: moment().weekday(0).format('YYYY-MM-DD'),
-        //  end: moment().weekday(6).format('YYYY-MM-DD'),
     }, []);
 
     const locales = {
@@ -66,6 +71,7 @@ function Agendamentos() {
         getDay,
         locales,
     });
+
     const messages = {
         today: 'Hoje',
         previous: 'Anterior',
@@ -74,6 +80,12 @@ function Agendamentos() {
         week: 'Semana',
         day: 'Dia',
     };
+
+    const fecharModal = () => {
+        setMostrarModal(false);
+        setEventoSelecionado(null);
+    };
+
     return (
         <div className="col p-5 overflow-auto h-100">
             <div className="row">
@@ -94,7 +106,15 @@ function Agendamentos() {
                         style={{ height: 600 }}
                         culture="pt-BR"
                         messages={messages}
+                        onSelectEvent={handleSelectEvento}
                     />
+                    {eventoSelecionado && (
+                        <EventoModal
+                            evento={eventoSelecionado}
+                            mostrar={mostrarModal}
+                            fecharModal={fecharModal}
+                        />
+                    )}
                 </div>
             </div>
         </div>

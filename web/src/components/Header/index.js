@@ -45,7 +45,7 @@ function Header() {
                     <span className="d-block m-0 p-0 text-white">TimeGlam</span>
                     <small className="m-0 p-0 text-white">
                         {' '}
-                        Plano: Diamante 💎
+                        Plano: Premium 💎
                     </small>
                 </div>
                 <div className="ml-auto dropdown" ref={dropdownRef}>
